@@ -1,3 +1,8 @@
+# DEPENDECIAS REACT
+# npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
+# npm install --save @fortawesome/free-brands-svg-icons
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

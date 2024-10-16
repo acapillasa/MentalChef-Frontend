@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './styles/scss.scss';
+import Header from './components/Header';
+import ButtonDarkMode from './components/ButtonDarkMode';
+import Parallax from './components/Parallax';
+import Bienvenida from './components/Bienvenida';
+import Instructions from './components/Instructions';
+import GameExample from './components/GameExample';
+import QuickGame from './components/QuickGame';
+import Footer from './components/Footer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ButtonDarkMode/>
+    <Header/>
+    <Parallax/>
+    <Bienvenida/>
+    <Parallax/>
+    <Instructions/>
+    <GameExample/>
+    <Parallax/>
+    <QuickGame/>
+    <Parallax/>
+    <Footer/>
   </React.StrictMode>
 );
 

@@ -1,0 +1,993 @@
+// Colores
+$primary-color: #ffb347;
+$secondary-color: #333;
+$hover-bg-color: #fff;
+$rojo-fuego: #f1473a;
+$blanco-transparente: rgba(255, 255, 255, 0.9);
+$correcto: #388e3c;
+$incorrecto: #d32f2f;
+
+// Variables de tamaño de letra
+$letra-gigante: 5rem;
+$letra-muy-grande: 3rem;
+$letra-grande: 2rem;
+$letra-estandar: 1.2rem;
+$letra-estandar-grande: 1.5rem;
+$letra-pequeña: 1rem;
+$letra-mini: 0.8rem;
+
+// Variables de tamaño para pantallas
+$pantalla-pequeña: 576px; // Móviles pequeños
+$pantalla-mediana: 768px; // Tablets
+$pantalla-grande: 992px; // Portátiles
+$pantalla-muy-grande: 1200px; // Pantallas grandes
+
+// Metodo bg-color y color
+@mixin theme-colors($bg-color, $text-color) {
+  background-color: $bg-color;
+  color: $text-color;
+}
+
+// Metodo margin y padding
+@mixin spacing($mValue, $pValue) {
+  margin: $mValue;
+  padding: $pValue;
+}
+
+// Metodo animacion enlaces
+@mixin hover-effect($hover-color) {
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    color: $hover-color;
+
+    &:before {
+      width: 100%;
+      left: 0;
+    }
+  }
+}
+
+@mixin dark-mode() {
+  &.dark-mode {
+    background-color: $secondary-color; // Fondo oscuro
+    color: $hover-bg-color; // Color de texto oscuro
+
+    .game-example {
+      background-color: $secondary-color; // Fondo más oscuro para el div
+      color: $hover-bg-color; // Cambiar el color del texto a blanco
+
+      h3,
+      .question,
+      .answer {
+        color: $hover-bg-color; // Asegúrate de que todos los elementos de texto dentro sean blancos
+      }
+
+      .answer {
+        border: 2px solid $hover-bg-color;
+      }
+
+      .correct {
+        background-color: $correcto; // Puedes mantener el color de la respuesta correcta
+        color: $hover-bg-color; // Asegúrate de que el texto sea blanco también
+      }
+
+      .incorrect {
+        background-color: $incorrecto; // Mantén el color de la respuesta incorrecta
+        color: $hover-bg-color; // Cambiar texto a blanco
+      }
+    }
+    .btn-partida-rapida {
+      &:hover {
+        background-color: $incorrecto;
+      }
+    }
+  }
+}
+
+header {
+  padding: 20px 0;
+  animation: fadeInHeader 1s ease; // Animación de entrada para el header
+  @include theme-colors($primary-color, $secondary-color);
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .logo {
+      width: 120px; // Ajusta el tamaño del logo según necesites
+      transition: transform 0.3s ease; // Transición suave para el zoom
+
+      &:hover {
+        transform: scale(1.5); // Aumenta el tamaño al pasar el mouse
+      }
+    }
+
+    h1 {
+      display: flex; // Para alinear las letras en fila
+      font-family: "Arial", sans-serif;
+      font-size: $letra-gigante;
+
+      .letter {
+        display: inline-block; // Permitir animación individual
+        transition: transform 0.5s ease-out; // Transición suave para la rotación
+        margin-left: 2px;
+        margin-right: 2px;
+
+        &:hover {
+          transform: rotate(360deg); // Rotar 360 grados al pasar el mouse
+        }
+      }
+    }
+
+    nav {
+      ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+
+        @include spacing(0, 0);
+
+        li {
+          a {
+            text-decoration: none;
+            font-size: $letra-estandar;
+            color: $secondary-color;
+            padding: 5px;
+            position: relative; // Necesario para el efecto del subrayado
+            @include hover-effect($hover-bg-color);
+
+            // Efecto de subrayado desde el centro
+            &:before {
+              content: "";
+              position: absolute;
+              width: 0;
+              height: 2px;
+              bottom: -5px;
+              left: 50%;
+              background-color: black; // Usar negro para la raya
+              transition: width 0.3s ease, left 0.3s ease;
+            }
+          }
+        }
+      }
+
+      .login-link {
+        font-weight: bold; // Hacer que el texto sea más audaz
+        border: 2px solid $primary-color; // Agregar un borde alrededor del enlace
+        border-radius: 5px; // Bordes redondeados
+        padding: 5px 10px; // Espaciado interno
+        transition: background-color 0.3s ease, color 0.3s ease; // Transiciones suaves
+
+        // Asegúrate de que el estilo base sea visible
+        background-color: transparent; // Fondo transparente para que no sea un problema
+
+        &:hover {
+          background-color: $hover-bg-color; // Cambiar el fondo al pasar el ratón
+          color: $secondary-color; // Cambiar el color del texto al pasar el ratón
+        }
+      }
+    }
+  }
+}
+
+// Animación de desvanecimiento del Header
+@keyframes fadeInHeader {
+  from {
+    opacity: 0;
+    transform: translateY(-100px); // Desplazar ligeramente hacia abajo
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Estilos Responsivos header
+@media (max-width: $pantalla-grande) {
+  header {
+    .header-container {
+      flex-direction: column; // Cambia el diseño a columnas
+      align-items: center; // Alinea los elementos en el centro de forma horizontal
+      justify-content: center; // Centra los elementos verticalmente
+
+      .logo {
+        width: 100px; // Reduce el tamaño del logo
+      }
+
+      h1 {
+        font-size: $letra-muy-grande; // Ajusta el tamaño del título
+        text-align: center; // Asegúrate de centrar el texto
+      }
+
+      nav ul {
+        flex-direction: column; // Menú vertical
+        align-items: center; // Centra los elementos dentro del ul
+        gap: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: $pantalla-mediana) {
+  header {
+    .header-container {
+      .logo {
+        width: 80px; // Logo más pequeño en tablets
+      }
+
+      h1 {
+        font-size: $letra-grande; // Ajuste adicional del título
+      }
+    }
+  }
+
+  .content {
+    width: 90%; // Mayor ancho en tablets
+  }
+}
+
+@media (max-width: $pantalla-pequeña) {
+  header {
+    .header-container {
+      .logo {
+        width: 60px; // Logo aún más pequeño en móviles
+      }
+
+      h1 {
+        font-size: $letra-estandar-grande; // Ajuste adicional del título
+      }
+
+      nav ul {
+        font-size: $letra-pequeña; // Ajusta el tamaño del menú
+      }
+    }
+  }
+
+  .content {
+    width: 100%; // Ocupar todo el ancho en móviles
+  }
+
+  .game-example {
+    max-width: 100%; // Ocupar todo el ancho disponible
+  }
+}
+
+.btn-oscuro {
+  position: fixed;
+  top: 20px; // Ajusta la posición vertical
+  right: 20px; // Ajusta la posición horizontal
+  background-color: $secondary-color; // Color de fondo del botón
+  color: $blanco-transparente; // Color del texto o ícono
+  border: none;
+  border-radius: 50%; // Si deseas que sea un botón circular
+  padding: 10px; // Ajusta el tamaño del botón
+  cursor: pointer;
+  z-index: 1000; // Asegura que el botón esté por encima de otros elementos de la página
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Añade una sombra para destacar el botón
+
+  &:hover {
+    color: $secondary-color;
+    background-color: $hover-bg-color; // Cambia el color al pasar el mouse
+  }
+}
+
+.contenedor-contador-monedas {
+  display: flex;
+  align-items: center;
+  background-color: #ffb347; // Color de fondo similar al boceto
+  border-radius: 50px; // Bordes redondeados en todo el contenedor
+  padding: 10px 20px;
+  width: 150px; // Ajuste del tamaño del contenedor para que sea más compacto
+  cursor: pointer;
+  border: 3px solid black; // Borde negro para mayor contraste
+
+  .imagen-monedaV {
+    flex: 0 0 40px; // Ajuste del tamaño de la imagen
+    height: 45px; // Hacer que sea un cuadrado
+    border-radius: 50%; // Borde redondeado completo para hacer un círculo
+    overflow: hidden;
+    border: 2px solid black; // Borde negro alrededor de la imagen
+    background-color: white; // Fondo blanco para asemejarse al boceto
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover; // Ajusta la imagen dentro del contenedor sin deformarla
+    }
+  }
+
+  .contador {
+    flex: 1;
+    text-align: center; // Centrar el texto del contador
+    font-size: 2rem; // Tamaño más grande para el número
+    font-weight: bold; // Para hacer el número más visible
+    color: black; // Ajustar al color del boceto
+  }
+}
+
+.contenedor-pregunta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-color; // Fondo similar al boceto
+  border-radius: 50px; // Bordes redondeados
+  padding: 20px;
+  width: 400px; // Ajustar según el diseño deseado
+  height: 200px; // Ajuste de tamaño
+  border: 3px solid $secondary-color; // Borde negro alrededor
+  text-align: center;
+
+  h2 {
+    font-size: 1.5rem; // Tamaño de la fuente del título
+    color: $secondary-color; // Color del texto
+    margin-bottom: 20px; // Espacio entre el título y el botón
+  }
+
+  .golden-button {
+    touch-action: manipulation;
+    display: inline-block;
+    outline: none;
+    font-family: inherit;
+    font-size: 1em;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0.3em;
+    height: 2.75em;
+    line-height: 2.5em;
+    text-transform: uppercase;
+    padding: 0 1em;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(110, 80, 20, 0.4),
+      inset 0 -2px 5px 1px rgba(139, 66, 8, 1),
+      inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+    background-image: linear-gradient(
+      160deg,
+      #a54e07,
+      #b47e11,
+      #fef1a2,
+      #bc881b,
+      #a54e07
+    );
+    border: 1px solid #a55d07;
+    color: rgb(120, 50, 5);
+    text-shadow: 0 2px 2px rgba(250, 227, 133, 1);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-size: 100% 100%;
+    background-position: center;
+
+    &:focus,
+    &:hover {
+      background-size: 150% 150%;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23),
+        inset 0 -2px 5px 1px #b17d10,
+        inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+      border: 1px solid rgba(165, 93, 7, 0.6);
+      color: rgba(120, 50, 5, 0.8);
+    }
+
+    &:active {
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+        0 3px 6px rgba(110, 80, 20, 0.4), inset 0 -2px 5px 1px #b17d10,
+        inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+    }
+  }
+}
+
+.contenedor-evento {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $primary-color; // Color de fondo similar al boceto
+  border-radius: 50px; // Bordes redondeados
+  padding: 20px;
+  width: 600px; // Ajustar según sea necesario
+  height: 300px; // Altura del contenedor
+  border: 3px solid $secondary-color; // Borde negro como en el boceto
+  position: relative; // Para posicionar elementos dentro del contenedor
+
+  .tiempo-restante {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: $secondary-color;
+  }
+
+  .nombre-evento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+  
+    .tri {
+      position: relative;
+      border-top: 90px solid $rojo-fuego;  // Aumenté el tamaño del triángulo
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      border-bottom: 0px;
+      cursor: pointer; // Hace que el triángulo sea clickeable
+      margin-top: 10px;
+      text-decoration: none;
+      
+      // Añadir una animación suave
+      transition: all 0.3s ease; // Animación de transición
+  
+      // Hover state
+      &:hover {
+        border-bottom-color: $secondary-color; // Cambia el color en hover
+        transform: scale(1.1); // Aumenta el tamaño un 10% en hover
+      }
+    }
+  
+    .invert {
+      border-top: 0px;
+      border-bottom: 100px solid $rojo-fuego; // Tamaño aumentado también aquí
+      
+      // Hover en la versión invertida
+      &:hover {
+        border-bottom-color: $secondary-color;
+        transform: scale(1.1); // Aumenta el tamaño en hover también
+      }
+    }
+  }
+  
+
+  .colaboracion {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+
+    span {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    img {
+      width: 50px; // Ajustar tamaño de la imagen
+      height: 50px; // Hacer que sea un cuadrado
+      border-radius: 50%; // Hacer la imagen redondeada
+      border: 2px solid $secondary-color; // Borde negro alrededor de la imagen
+    }
+  }
+}
+
+.game {
+  @include spacing(20px auto, 20px);
+  border: 2px solid $secondary-color; // Borde del ejemplo
+  border-radius: 10px; // Bordes redondeados
+  max-width: 600px; // Ancho máximo para el contenido
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: $primary-color;
+
+  h3 {
+    font-size: $letra-grande;
+    margin-bottom: 15px;
+    color: $secondary-color;
+  }
+
+  .question {
+    font-size: $letra-estandar-grande;
+    margin-bottom: 10px;
+    color: $secondary-color;
+  }
+
+  .answers-grid {
+    display: grid; // Activar el diseño de cuadrícula
+    grid-template-columns: repeat(2, 1fr); // Dos columnas
+    gap: 10px; // Espacio entre las respuestas
+
+    .answer {
+      font-size: $letra-estandar;
+      @include spacing(10px 0, 10px);
+      border-radius: 5px; // Bordes redondeados para las respuestas
+      text-align: center; // Centrar texto
+      display: flex; // Cambiar a flexbox para la alineación
+      justify-content: center; // Centrar horizontalmente
+      align-items: center; // Centrar verticalmente
+      border: 2px solid $secondary-color; // Borde del ejemplo
+      color: $secondary-color;
+      background-color: #fff; // Fondo blanco por defecto
+      cursor: pointer; // Indicador de clic
+
+      transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease;
+
+      &:hover {
+        transform: scale(1.05); // Aumenta ligeramente el tamaño
+        background-color: #f0f0f0; // Color de fondo claro al hacer hover
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Sombra para darle profundidad
+      }
+    }
+  }
+}
+
+.game-creator {
+  @include spacing(20px auto, 20px);
+  border: 2px solid $secondary-color;
+  border-radius: 10px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  h3 {
+    font-size: $letra-grande;
+    margin-bottom: 15px;
+    color: $secondary-color;
+  }
+
+  .input-question {
+    font-size: $letra-estandar;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid $secondary-color;
+    width: 80%;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+
+  .answers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    .answer {
+      font-size: $letra-estandar;
+      @include spacing(10px 0, 10px);
+      border-radius: 5px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid $secondary-color;
+      color: $secondary-color;
+      position: relative;
+      
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        width: 70%;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      input[type="radio"] {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      /* Cambiar el fondo del div cuando el radio button esté seleccionado */
+      input[type="radio"]:checked + input[type="text"] {
+        background-color: #28a745; /* Fondo verde */
+        color: white;
+        border-color: #28a745;
+      }
+
+      /* Cambiar el fondo del div cuando el radio button esté seleccionado */
+      input[type="radio"]:checked {
+        background-color: #28a745; /* Fondo verde */
+        color: white;
+        border-color: #28a745;
+      }
+
+      &:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .submit-btn {
+    padding: 10px 20px;
+    font-size: $letra-estandar-grande;
+    border: none;
+    border-radius: 5px;
+    background-color: $primary-color;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      box-shadow: 0 0 5px 2px $secondary-color;
+    }
+  }
+}
+
+.login-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 50px auto;
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .login-form {
+    .input-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"], input[type="password"] {
+        width: 90%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: $secondary-color;
+        }
+      }
+    }
+
+    .login-btn {
+      width: 98%;
+      padding: 10px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+}
+
+.register-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 50px auto;  // Alinea al centro de la pantalla con un margen superior
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .register-form {
+    .input-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"], input[type="email"], input[type="password"] {
+        width: 90%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: $secondary-color;
+        }
+      }
+    }
+
+    .register-btn {
+      width: 98%;
+      padding: 10px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+}
+
+
+body {
+  @include spacing(0, 0);
+  background-color: $blanco-transparente; // Fondo claro por defecto
+  color: $hover-bg-color; // Color de texto claro
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  @include dark-mode();
+}
+
+.parallax {
+  background-image: url("../assets/fondo-frutas-sinFondo.png");
+  height: 20vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent; // Asegúrate de que el fondo de la parallax sea transparente
+}
+
+.content {
+  height: auto;
+  width: 60%;
+  @include spacing(50px auto, 30px);
+  background-color: $blanco-transparente; // Fondo semitransparente para mejorar la legibilidad
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); // Sombra más profunda
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $secondary-color;
+  text-align: center;
+  animation: fadeInContent 1s ease; // Animación de entrada
+
+  h2,
+  p {
+    background-color: transparent; // Asegura que los textos no hereden fondo
+  }
+
+  h2 {
+    font-size: $letra-muy-grande; // Aumentar el tamaño del texto
+    margin-bottom: 15px;
+    font-weight: bold; // Hacer el texto más llamativo
+  }
+
+  p {
+    font-size: $letra-estandar-grande; // Aumentar el tamaño del texto
+    @include spacing(0, 0);
+  }
+
+  @include dark-mode();
+}
+
+// Animación de desvanecimiento del content
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateX(200px); // Desplazar ligeramente hacia arriba
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-example {
+  @include spacing(20px auto, 20px);
+  border: 2px solid $secondary-color; // Borde del ejemplo
+  border-radius: 10px; // Bordes redondeados
+  max-width: 600px; // Ancho máximo para el contenido
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  h3 {
+    font-size: $letra-grande;
+    margin-bottom: 15px;
+    color: $secondary-color;
+  }
+
+  .question {
+    font-size: $letra-estandar-grande;
+    margin-bottom: 10px;
+    color: $secondary-color;
+  }
+
+  .answers-grid {
+    display: grid; // Activar el diseño de cuadrícula
+    grid-template-columns: repeat(2, 1fr); // Dos columnas
+    gap: 10px; // Espacio entre las respuestas
+
+    .answer {
+      font-size: $letra-estandar;
+      @include spacing(10px 0, 10px);
+      border-radius: 5px; // Bordes redondeados para las respuestas
+      text-align: center; // Centrar texto
+      display: flex; // Cambiar a flexbox para la alineación
+      justify-content: center; // Centrar horizontalmente
+      align-items: center; // Centrar verticalmente
+      border: 2px solid $secondary-color; // Borde del ejemplo
+      color: $secondary-color;
+
+      &.correct {
+        background-color: #c8e6c9; // Verde claro para respuesta correcta
+        color: $correcto; // Texto verde oscuro
+      }
+
+      &.incorrect {
+        background-color: #ffcdd2; // Rojo claro para respuesta incorrecta
+        color: $incorrecto; // Texto rojo oscuro
+      }
+
+      .mouse-answer {
+        display: flex; // Usar Flexbox para alinear horizontalmente
+        align-items: center; // Centrar verticalmente la imagen y el texto
+        justify-content: center; // Centrar horizontalmente la imagen y el texto
+      }
+
+      .mouse-image {
+        width: 30px; // Ajusta el tamaño según sea necesario
+        height: auto; // Mantener la proporción
+        margin-right: 5px; // Espacio entre la imagen y el texto
+      }
+    }
+  }
+}
+
+.partida-rapida {
+  text-align: center; // Centrar el texto y el botón
+  margin-top: 20px;
+
+  p {
+    font-size: $letra-estandar; // Ajusta el tamaño del texto
+    margin-bottom: 10px; // Espacio debajo del texto
+  }
+
+  .btn-partida-rapida {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: $primary-color; // Usa tu color primario
+    color: #fff;
+    text-decoration: none;
+    font-size: $letra-estandar;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+footer {
+  @include theme-colors($primary-color, $secondary-color);
+  padding: 20px 0;
+  text-align: center; // Centrar texto
+
+  .footer-container {
+    display: flex; // Usar flexbox para la alineación
+    justify-content: space-around; // Espaciar las secciones
+    flex-wrap: wrap;
+    max-width: 1200px; // Ancho máximo
+    margin: 0 auto; // Centrar footer en la página
+    gap: 20px;
+
+    .footer-section {
+      flex: 1; // Permitir que las secciones ocupen el mismo espacio
+      margin: 0 20px; // Espaciado entre secciones
+
+      h5 {
+        font-size: $letra-grande; // Tamaño de fuente para los encabezados
+        margin-bottom: 10px; // Espacio debajo del encabezado
+      }
+
+      p {
+        font-size: $letra-pequeña; // Tamaño de fuente para el texto
+      }
+
+      ul {
+        list-style: none; // Sin viñetas
+        padding: 0; // Sin padding
+
+        li {
+          margin: 5px 0; // Espacio entre enlaces
+
+          $redes-colores: #3b5998, #00acee, #e1306c, #c4302b; // Colores para Facebook, Twitter, Instagram, YouTube
+          $redes-nombres: facebook, twitter, instagram, youtube; // Nombres de las clases
+
+          @for $i from 1 through length($redes-nombres) {
+            .#{nth($redes-nombres, $i)} {
+              &:hover {
+                color: nth($redes-colores, $i);
+              }
+            }
+          }
+
+          a {
+            text-decoration: none; // Sin subrayado
+            color: $secondary-color; // Color del texto
+            font-size: $letra-estandar;
+            @include hover-effect($hover-bg-color);
+
+            // Efecto de subrayado en hover
+            &:before {
+              content: "";
+              position: absolute;
+              width: 0;
+              height: 2px;
+              bottom: -2px;
+              left: 0;
+              background-color: $hover-bg-color;
+              transition: width 0.3s ease;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    margin-top: 20px; // Espacio arriba del pie de página
+
+    p {
+      font-size: $letra-mini; // Tamaño de fuente más pequeño
+      margin: 0; // Sin margen
+    }
+  }
+}
+
+.footer-bottom {
+  margin-top: 20px;
+
+  p {
+    font-size: $letra-mini;
+    margin: 0;
+  }
+}
+
+// Estilos Responsivos footer
+@media (max-width: $pantalla-mediana) {
+  .footer-container {
+    flex-direction: column; // Cambiar a columnas en pantallas pequeñas
+    align-items: center; // Alinear al centro
+    text-align: center; // Centrar el texto
+  }
+
+  .footer-section {
+    margin: 10px 0; // Ajustar el margen para espaciado vertical
+  }
+}
