@@ -1,34 +1,63 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import './styles/scss.scss';
-import Header from './components/Header';
-import ButtonDarkMode from './components/ButtonDarkMode';
-import Parallax from './components/Parallax';
-import Bienvenida from './components/Bienvenida';
-import Instructions from './components/Instructions';
-import GameExample from './components/GameExample';
-import QuickGame from './components/QuickGame';
-import Footer from './components/Footer';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import "./styles/scss.scss";
+
+import Header from "./components/globales/Header";
+import ButtonDarkMode from "./components/globales/ButtonDarkMode";
+import Parallax from "./components/globales/Parallax";
+import Bienvenida from "./components/principales/Bienvenida";
+import Instructions from "./components/principales/Instructions";
+import GameExample from "./components/principales/GameExample";
+import QuickGame from "./components/principales/QuickGame";
+import Footer from "./components/globales/Footer";
+import Login from "./components/Login"; // Importa el componente de Login
+import QuickGameGame from "components/QuickGameGame";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ButtonDarkMode/>
-    <Header/>
-    <Parallax/>
-    <Bienvenida/>
-    <Parallax/>
-    <Instructions/>
-    <GameExample/>
-    <Parallax/>
-    <QuickGame/>
-    <Parallax/>
-    <Footer/>
-  </React.StrictMode>
+  <BrowserRouter>
+    <React.StrictMode>
+      <ButtonDarkMode />
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Parallax />
+              <Bienvenida />
+              <Parallax />
+              <Instructions />
+              <GameExample />
+              <Parallax />
+              <QuickGame />
+              <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <>
+              <Parallax /> <Login /> <Parallax />{" "}
+            </>
+          }
+        />
+        <Route
+          path="/jugar"
+          element={
+            <>
+              <Parallax /> <QuickGameGame /> <Parallax />{" "}
+            </>
+          }
+        />
+      </Routes>
+      <Footer />
+    </React.StrictMode>
+  </BrowserRouter>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

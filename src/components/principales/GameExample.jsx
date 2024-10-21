@@ -1,5 +1,5 @@
 import React from 'react';
-import mouse from '../assets/mouse.png';
+import mouse from 'assets/mouse.png';
 
 const GameExample = () => {
   return (

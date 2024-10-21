@@ -1,15 +1,14 @@
-import React from 'react';
-import logo from '../assets/MentalChef-logo.png';
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "assets/MentalChef-logo.png";
 
 const Header = () => {
   return (
     <header>
       <div className="header-container">
-        <img
-          src={logo}
-          alt="Logo MentalChef"
-          className="logo"
-        />
+        <Link to="/">
+          <img src={logo} alt="Logo MentalChef" className="logo" />
+        </Link>
         <h1>
           <span className="letter">M</span>
           <span className="letter">e</span>
@@ -34,7 +33,9 @@ const Header = () => {
               <a href="#contacto">Contacto</a>
             </li>
             <li>
-              <a href="#login" className="login-link">Login</a>
+              <Link to="/login" className="login-link">
+                Login
+              </Link>
             </li>
           </ul>
         </nav>

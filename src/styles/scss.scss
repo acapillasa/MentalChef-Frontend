@@ -68,13 +68,13 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
       }
 
       .correct {
-        background-color: $correcto; // Puedes mantener el color de la respuesta correcta
-        color: $hover-bg-color; // Asegúrate de que el texto sea blanco también
+        background-color: $correcto;
+        color: $hover-bg-color;
       }
 
       .incorrect {
-        background-color: $incorrecto; // Mantén el color de la respuesta incorrecta
-        color: $hover-bg-color; // Cambiar texto a blanco
+        background-color: $incorrecto;
+        color: $hover-bg-color;
       }
     }
     .btn-partida-rapida {
@@ -504,6 +504,16 @@ header {
 
       transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease;
 
+      &.correct {
+        background-color: #c8e6c9;
+        color: $correcto;
+      }
+
+      &.incorrect {
+        background-color: #ffcdd2;
+        color: $incorrecto;
+      }
+
       &:hover {
         transform: scale(1.05); // Aumenta ligeramente el tamaño
         background-color: #f0f0f0; // Color de fondo claro al hacer hover
@@ -844,13 +854,13 @@ body {
       color: $secondary-color;
 
       &.correct {
-        background-color: #c8e6c9; // Verde claro para respuesta correcta
-        color: $correcto; // Texto verde oscuro
+        background-color: #c8e6c9;
+        color: $correcto;
       }
 
       &.incorrect {
-        background-color: #ffcdd2; // Rojo claro para respuesta incorrecta
-        color: $incorrecto; // Texto rojo oscuro
+        background-color: #ffcdd2;
+        color: $incorrecto;
       }
 
       .mouse-answer {
