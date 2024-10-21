@@ -1,7 +1,7 @@
 # DEPENDECIAS REACT
 # npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 # npm install --save @fortawesome/free-brands-svg-icons
-#
+# npm install react-router-dom
 #
 #
 #
