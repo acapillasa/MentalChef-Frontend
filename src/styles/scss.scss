@@ -275,6 +275,8 @@ header {
   }
 }
 
+
+
 .contenedor-contador-monedas {
   display: flex;
   align-items: center;
@@ -407,31 +409,31 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     margin-top: 20px;
-  
+
     .tri {
       position: relative;
-      border-top: 90px solid $rojo-fuego;  // Aumenté el tamaño del triángulo
+      border-top: 90px solid $rojo-fuego; // Aumenté el tamaño del triángulo
       border-left: 70px solid transparent;
       border-right: 70px solid transparent;
       border-bottom: 0px;
       cursor: pointer; // Hace que el triángulo sea clickeable
       margin-top: 10px;
       text-decoration: none;
-      
+
       // Añadir una animación suave
       transition: all 0.3s ease; // Animación de transición
-  
+
       // Hover state
       &:hover {
         border-bottom-color: $secondary-color; // Cambia el color en hover
         transform: scale(1.1); // Aumenta el tamaño un 10% en hover
       }
     }
-  
+
     .invert {
       border-top: 0px;
       border-bottom: 100px solid $rojo-fuego; // Tamaño aumentado también aquí
-      
+
       // Hover en la versión invertida
       &:hover {
         border-bottom-color: $secondary-color;
@@ -439,7 +441,6 @@ header {
       }
     }
   }
-  
 
   .colaboracion {
     position: absolute;
@@ -465,9 +466,9 @@ header {
 
 .game {
   @include spacing(20px auto, 20px);
-  border: 2px solid $secondary-color; // Borde del ejemplo
-  border-radius: 10px; // Bordes redondeados
-  max-width: 600px; // Ancho máximo para el contenido
+  border: 2px solid $secondary-color;
+  border-radius: 10px;
+  max-width: 600px;
   text-align: center;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   background-color: $primary-color;
@@ -478,22 +479,62 @@ header {
     color: $secondary-color;
   }
 
-  .question {
-    font-size: $letra-estandar-grande;
-    margin-bottom: 10px;
-    color: $secondary-color;
+  .pregunta-imagen-container {
+    position: relative;
+    cursor: pointer;
+  
+    img {
+      width: 50%;
+      border-radius: 50px;
+    }
+  
+    .curiosidad {
+      width: 50%; // Mismo ancho que la imagen
+      height: 100%; // Mismo alto que la imagen
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $secondary-color;
+      border-radius: 50px;
+      z-index: 1;
+      background: $blanco-transparente;
+      background-size: cover;
+      background-position: center;
+      text-align: center; // Centra el texto horizontalmente
+      overflow: hidden; // Evita desbordamiento
+      white-space: normal; // Permite salto de línea normal
+      max-height: 100%; // Asegura que no crezca más allá del contenedor
+      box-sizing: border-box; // Incluye padding en el tamaño total del elemento
+      overflow-wrap: break-word; // Rompe palabras largas si es necesario
+      max-width: 90%; // Limita el ancho del contenido para evitar desbordes laterales
+      font-size: clamp(12px, 2vw, $letra-estandar); // Ajusta dinámicamente el tamaño del texto
+    }
+  
+    &.mostrar-curiosidad .curiosidad {
+      display: flex; // Mostrar cuando se haga clic
+      background: url("http://localhost:8080/${pregunta.imagen}") no-repeat center center;
+      background-size: cover;
+      background-color: $blanco-transparente;
+    }
   }
+  
 
   .answers-grid {
-    display: grid; // Activar el diseño de cuadrícula
-    grid-template-columns: repeat(2, 1fr); // Dos columnas
-    gap: 10px; // Espacio entre las respuestas
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 
     .answer {
       font-size: $letra-estandar;
       @include spacing(10px 0, 10px);
       border-radius: 5px; // Bordes redondeados para las respuestas
-      text-align: center; // Centrar texto
+      text-align: center;
       display: flex; // Cambiar a flexbox para la alineación
       justify-content: center; // Centrar horizontalmente
       align-items: center; // Centrar verticalmente
@@ -502,7 +543,7 @@ header {
       background-color: #fff; // Fondo blanco por defecto
       cursor: pointer; // Indicador de clic
 
-      transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease;
+      transition: background-color 0.1s ease, box-shadow 0.1s ease;
 
       &.correct {
         background-color: #c8e6c9;
@@ -515,10 +556,23 @@ header {
       }
 
       &:hover {
-        transform: scale(1.05); // Aumenta ligeramente el tamaño
         background-color: #f0f0f0; // Color de fondo claro al hacer hover
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Sombra para darle profundidad
       }
+    }
+  }
+
+  .reiniciar-juego {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
     }
   }
 }
@@ -568,7 +622,7 @@ header {
       border: 2px solid $secondary-color;
       color: $secondary-color;
       position: relative;
-      
+
       label {
         display: flex;
         align-items: center;
@@ -661,7 +715,8 @@ header {
         margin-bottom: 5px;
       }
 
-      input[type="text"], input[type="password"] {
+      input[type="text"],
+      input[type="password"] {
         width: 90%;
         padding: 10px;
         border: 2px solid #ddd;
@@ -700,7 +755,7 @@ header {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 300px;
-  margin: 50px auto;  // Alinea al centro de la pantalla con un margen superior
+  margin: 50px auto; // Alinea al centro de la pantalla con un margen superior
 
   h2 {
     text-align: center;
@@ -718,7 +773,9 @@ header {
         margin-bottom: 5px;
       }
 
-      input[type="text"], input[type="email"], input[type="password"] {
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
         width: 90%;
         padding: 10px;
         border: 2px solid #ddd;
@@ -750,7 +807,6 @@ header {
     }
   }
 }
-
 
 body {
   @include spacing(0, 0);

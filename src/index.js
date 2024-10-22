@@ -19,7 +19,6 @@ import QuickGameGame from "components/QuickGameGame";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
       <ButtonDarkMode />
       <Header />
       <Routes>
@@ -56,7 +55,6 @@ root.render(
         />
       </Routes>
       <Footer />
-    </React.StrictMode>
   </BrowserRouter>
 );
 
