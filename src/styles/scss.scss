@@ -312,7 +312,7 @@ header {
       cursor: pointer;
       padding: 0 20px;
       transition: transform 0.2s ease;
-      color: #215a6d; // Color de las flechas
+      color: $secondary-color;
 
       &:hover {
         transform: scale(1.2);
