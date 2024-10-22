@@ -228,6 +228,14 @@ header {
   .content {
     width: 90%; // Mayor ancho en tablets
   }
+  .contenedor-campana {
+    height: auto;
+    padding: 10px;
+    .imagen-campana {
+      width: 120px;
+      height: 120px;
+    }
+  }
 }
 
 @media (max-width: $pantalla-pequeña) {
@@ -275,7 +283,97 @@ header {
   }
 }
 
+.campana {
+  text-align: center;
+  margin-top: 20px;
 
+  h2 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+
+  .contenedor-campana {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffb347;
+    border-radius: 50px;
+    padding: 20px;
+    width: 90%; // Ajuste responsivo
+    max-width: 600px; // Limitar el tamaño máximo
+    height: 300px;
+    position: relative;
+
+    .flecha {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 0 20px;
+      transition: transform 0.2s ease;
+      color: #215a6d; // Color de las flechas
+
+      &:hover {
+        transform: scale(1.2);
+      }
+
+      &.izquierda {
+        position: absolute;
+        left: 10px;
+      }
+
+      &.derecha {
+        position: absolute;
+        right: 10px;
+      }
+    }
+
+    .contenido {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .imagen-campana {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid black;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+          transform: scale(1.05); // Efecto hover en la imagen
+        }
+      }
+
+      .texto-campana {
+        margin-top: 10px;
+
+        p {
+          font-size: 1.2rem;
+          font-weight: bold;
+          text-align: center; // Centra el texto
+        }
+
+        .btn-empezar {
+          margin-top: 10px;
+          padding: 10px 20px;
+          background-color: #215a6d;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: darken(#215a6d, 10%);
+          }
+        }
+      }
+    }
+  }
+}
 
 .contenedor-contador-monedas {
   display: flex;
@@ -482,12 +580,12 @@ header {
   .pregunta-imagen-container {
     position: relative;
     cursor: pointer;
-  
+
     img {
       width: 50%;
       border-radius: 50px;
     }
-  
+
     .curiosidad {
       width: 50%; // Mismo ancho que la imagen
       height: 100%; // Mismo alto que la imagen
@@ -513,17 +611,21 @@ header {
       box-sizing: border-box; // Incluye padding en el tamaño total del elemento
       overflow-wrap: break-word; // Rompe palabras largas si es necesario
       max-width: 90%; // Limita el ancho del contenido para evitar desbordes laterales
-      font-size: clamp(12px, 2vw, $letra-estandar); // Ajusta dinámicamente el tamaño del texto
+      font-size: clamp(
+        12px,
+        2vw,
+        $letra-estandar
+      ); // Ajusta dinámicamente el tamaño del texto
     }
-  
+
     &.mostrar-curiosidad .curiosidad {
       display: flex; // Mostrar cuando se haga clic
-      background: url("http://localhost:8080/${pregunta.imagen}") no-repeat center center;
+      background: url("http://localhost:8080/${pregunta.imagen}") no-repeat
+        center center;
       background-size: cover;
       background-color: $blanco-transparente;
     }
   }
-  
 
   .answers-grid {
     display: grid;

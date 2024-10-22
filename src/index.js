@@ -15,46 +15,55 @@ import QuickGame from "./components/principales/QuickGame";
 import Footer from "./components/globales/Footer";
 import Login from "./components/Login"; // Importa el componente de Login
 import QuickGameGame from "components/QuickGameGame";
+import CampanyaSelector from "components/CampanyaSelector";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-      <ButtonDarkMode />
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Parallax />
-              <Bienvenida />
-              <Parallax />
-              <Instructions />
-              <GameExample />
-              <Parallax />
-              <QuickGame />
-              <Parallax />
-            </>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <>
-              <Parallax /> <Login /> <Parallax />{" "}
-            </>
-          }
-        />
-        <Route
-          path="/jugar"
-          element={
-            <>
-              <Parallax /> <QuickGameGame /> <Parallax />{" "}
-            </>
-          }
-        />
-      </Routes>
-      <Footer />
+    <ButtonDarkMode />
+    <Header />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <Parallax />
+            <Bienvenida />
+            <Parallax />
+            <Instructions />
+            <GameExample />
+            <Parallax />
+            <QuickGame />
+            <Parallax />
+          </>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <>
+            <Parallax /> <Login /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/jugar"
+        element={
+          <>
+            <Parallax /> <QuickGameGame /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/MisCosas"
+        element={
+          <>
+            <Parallax /> <CampanyaSelector /> <Parallax />{" "}
+          </>
+        }
+      />
+    </Routes>
+    <Footer />
   </BrowserRouter>
 );
 

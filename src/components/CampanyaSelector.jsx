@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
-import './PreguntaGrupos.scss';
+import React, { useState, useEffect } from 'react';
 
-const gruposPreguntas = [
-  { img: 'images/foto1.jpg', texto: 'Grupo 1' },
-  { img: 'images/foto2.jpg', texto: 'Grupo 2' },
-  { img: 'images/foto3.jpg', texto: 'Grupo 3' },
-  { img: 'images/foto4.jpg', texto: 'Grupo 4' }
-];
-
-const CampañaSelector = () => {
+const CampanyaSelector = () => {
+  const [categorias, setCategorias] = useState([]);
   const [indiceActual, setIndiceActual] = useState(0);
 
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/categorias');
+        const data = await response.json();
+        setCategorias(data); // Asumiendo que data es un array de objetos con la propiedad 'categoria'
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
   const siguienteGrupo = () => {
-    setIndiceActual((prevIndice) => (prevIndice + 1) % gruposPreguntas.length);
+    setIndiceActual((prevIndice) => (prevIndice + 1) % categorias.length);
   };
 
   const anteriorGrupo = () => {
-    setIndiceActual((prevIndice) => (prevIndice - 1 + gruposPreguntas.length) % gruposPreguntas.length);
+    setIndiceActual((prevIndice) => (prevIndice - 1 + categorias.length) % categorias.length);
   };
+
+  if (categorias.length === 0) {
+    return <div>Cargando categorías...</div>; // Mensaje mientras se cargan las categorías
+  }
 
   return (
     <div className="campana">
@@ -25,9 +36,13 @@ const CampañaSelector = () => {
       <div className="contenedor-campana">
         <button className="flecha izquierda" onClick={anteriorGrupo}>&lt;</button>
         <div className="contenido">
-          <img src={gruposPreguntas[indiceActual].img} alt="Imagen del grupo" className="imagen-campana" />
+          <img
+            src={`http://localhost:8080/images/categorias/${categorias[indiceActual].categoria}.jpg`} // URL de la imagen
+            alt={`Imagen de ${categorias[indiceActual].categoria}`} // Texto alternativo para la imagen
+            className="imagen-campana"
+          />
           <div className="texto-campana">
-            <p>{gruposPreguntas[indiceActual].texto}</p>
+            <p>Comida {categorias[indiceActual].categoria}</p> {/* Mostrar el nombre de la categoría */}
             <button className="btn-empezar">Empezar</button>
           </div>
         </div>
@@ -37,4 +52,4 @@ const CampañaSelector = () => {
   );
 };
 
-export default CampañaSelector;
+export default CampanyaSelector;
