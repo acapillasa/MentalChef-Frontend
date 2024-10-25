@@ -1,5 +1,6 @@
 // Colores
 $primary-color: #ffb347;
+$primary-color-hover: #df9a3b;
 $secondary-color: #333;
 $hover-bg-color: #fff;
 $rojo-fuego: #f1473a;
@@ -52,6 +53,14 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
   &.dark-mode {
     background-color: $secondary-color; // Fondo oscuro
     color: $hover-bg-color; // Color de texto oscuro
+
+    .btn-oscuro {
+      background-color: $hover-bg-color !important;
+
+      svg {
+        color: $secondary-color;
+      }
+    }
 
     .game-example {
       background-color: $secondary-color; // Fondo más oscuro para el div
@@ -268,8 +277,8 @@ header {
   position: fixed;
   top: 20px; // Ajusta la posición vertical
   right: 20px; // Ajusta la posición horizontal
-  background-color: $secondary-color; // Color de fondo del botón
-  color: $blanco-transparente; // Color del texto o ícono
+  background-color: $secondary-color !important; // Color de fondo del botón
+  color: $blanco-transparente !important; // Color del texto o ícono
   border: none;
   border-radius: 50%; // Si deseas que sea un botón circular
   padding: 10px; // Ajusta el tamaño del botón
@@ -341,7 +350,7 @@ header {
         object-fit: cover;
         border: 2px solid black;
         transition: transform 0.2s ease;
-        
+
         &:hover {
           transform: scale(1.05); // Efecto hover en la imagen
         }
@@ -789,6 +798,123 @@ header {
 
     &:focus {
       box-shadow: 0 0 5px 2px $secondary-color;
+    }
+  }
+}
+
+.preguntas-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: "Arial, sans-serif";
+  background-color: $hover-bg-color;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  .titulo {
+    color: $secondary-color;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  form {
+    .form-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: $secondary-color;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
+      }
+
+      input[type="checkbox"] {
+        margin-top: 10px;
+      }
+    }
+    .btn-actualizar {
+      background-color: $primary-color;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $primary-color-hover;
+      }
+    }
+  }
+
+  .preguntas-lista {
+    list-style-type: none;
+    @include spacing(0, 0);
+
+    .pregunta-item {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: box-shadow 0.3s ease;
+
+      &:hover {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .pregunta-content {
+        margin-bottom: 15px;
+
+        .pregunta-texto {
+          font-size: 18px;
+          color: $secondary-color;
+          margin-bottom: 5px;
+          display: block;
+        }
+
+        .pregunta-detalle {
+          font-size: 14px;
+          color: #666;
+          margin: 2px 0;
+        }
+      }
+
+      .pregunta-botones {
+        display: flex;
+        gap: 10px;
+
+        button {
+          background-color: $primary-color;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
     }
   }
 }

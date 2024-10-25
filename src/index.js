@@ -16,7 +16,9 @@ import Footer from "./components/globales/Footer";
 import Login from "./components/Login"; // Importa el componente de Login
 import QuickGameGame from "components/QuickGameGame";
 import CampanyaSelector from "components/CampanyaSelector";
-import CrearPregunta from "components/CrearPregunta";
+import CrearActualizarPregunta from "components/CrearActualizarPregunta";
+import PreguntasList from "components/PreguntasList";
+import EditarPregunta from "components/EditarPregunta";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -67,7 +69,23 @@ root.render(
         path="/CrearPregunta"
         element={
           <>
-            <Parallax /> <CrearPregunta /> <Parallax />{" "}
+            <Parallax /> <CrearActualizarPregunta /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/ListaPreguntas"
+        element={
+          <>
+            <Parallax /> <PreguntasList /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/editarPregunta/:id"
+        element={
+          <>
+            <Parallax /> <EditarPregunta /> <Parallax />{" "}
           </>
         }
       />
