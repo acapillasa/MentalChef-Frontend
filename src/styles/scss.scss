@@ -975,6 +975,24 @@ header {
       }
     }
   }
+  .register-link {
+    text-align: center; // Alinear el texto al centro
+    margin-top: 15px; // Espaciado superior
+
+    p {
+      color: #666;
+      font-size: 14px;
+
+      a {
+        color: $primary-color; // Usar el color primario para el enlace
+        text-decoration: none; // Sin subrayado
+
+        &:hover {
+          text-decoration: underline; // Subrayar al pasar el ratón
+        }
+      }
+    }
+  }
 }
 
 .register-container {
@@ -1031,6 +1049,24 @@ header {
 
       &:hover {
         background-color: $secondary-color;
+      }
+    }
+  }
+  .login-link {
+    text-align: center; // Alinear el texto al centro
+    margin-top: 15px; // Espaciado superior
+
+    p {
+      color: #666;
+      font-size: 14px;
+
+      a {
+        color: $primary-color; // Usar el color primario para el enlace
+        text-decoration: none; // Sin subrayado
+
+        &:hover {
+          text-decoration: underline; // Subrayar al pasar el ratón
+        }
       }
     }
   }

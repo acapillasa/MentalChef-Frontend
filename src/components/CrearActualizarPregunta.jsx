@@ -12,29 +12,25 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
     imagen: "",
   });
 
-  // Definir las opciones de dificultad
   const dificultades = ["Facil", "Media", "Dificil"];
 
-  // Obtener las categorías del servidor
   useEffect(() => {
-    fetch("http://localhost:8080/categorias")
+    fetch("http://10.14.1.17:8080/categorias")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
 
-  // Si se está actualizando, obtener los datos de la pregunta
   useEffect(() => {
     const fetchPregunta = async () => {
       if (preguntaId) {
         try {
           const response = await fetch(
-            `http://localhost:8080/preguntas/${preguntaId}`
+            `http://10.14.1.17:8080/preguntas/${preguntaId}`
           );
           const data = await response.json();
-          console.log("Datos de la pregunta:", data); // Para depuración
-
-          // Verifica si hay respuestas y mapea si es necesario
+          console.log("Datos de la pregunta:", data);
+          // Supongamos que 'data.respuestas' es un arreglo de objetos que incluye tanto 'respuesta' como 'id'
           setFormData((prev) => ({
             ...prev,
             pregunta: data.pregunta,
@@ -43,22 +39,24 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             dificultad: data.dificultad,
             imagen: data.imagen,
             respuestas:
-              data.respuestas.map((res) => res.respuesta) || prev.respuestas,
+              data.respuestas.map((res) => ({
+                id: res.id, // Asegúrate de incluir el ID de la respuesta
+                respuesta: res.respuesta,
+                correcta: res.correcta,
+              })) || prev.respuestas,
             correcta:
               data.respuestas.findIndex((res) => res.correcta) !== -1
                 ? data.respuestas.findIndex((res) => res.correcta)
-                : 0, // Asegúrate de establecer correctamente la respuesta correcta
+                : 0,
           }));
         } catch (error) {
           console.error("Error fetching pregunta:", error);
         }
       }
     };
-
     fetchPregunta();
   }, [preguntaId]);
 
-  // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -67,7 +65,6 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
     });
   };
 
-  // Manejar cambios en las respuestas
   const handleAnswerChange = (index, value) => {
     const newRespuestas = [...formData.respuestas];
     newRespuestas[index] = value;
@@ -77,11 +74,10 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
     });
   };
 
-  // Manejar cambios en la respuesta correcta
   const handleCorrectAnswerChange = (index) => {
     setFormData({
       ...formData,
-      correcta: index, // Solo actualiza el índice de la respuesta correcta
+      correcta: index,
     });
   };
 
@@ -108,9 +104,8 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
     try {
       let preguntaResponse;
       if (preguntaId) {
-        // Actualizar la pregunta existente
         preguntaResponse = await fetch(
-          `http://localhost:8080/preguntas/actualizar/${preguntaId}`,
+          `http://10.14.1.17:8080/preguntas/actualizar/${preguntaId}`,
           {
             method: "PUT",
             headers: {
@@ -119,34 +114,9 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             body: JSON.stringify(preguntaData),
           }
         );
-
-        // Aquí, suponiendo que tienes las respuestas en formData.respuestas
-        const respuestasData = formData.respuestas.map((respuesta, index) => ({
-          id: respuesta.id || null, // Asegúrate de que el ID esté incluido, o null si es nuevo
-          respuesta: respuesta, // Asume que 'respuesta' es solo texto
-          correcta: index === formData.correcta ? 1 : 0, // Aquí se puede cambiar a true/false
-      }));
-      
-
-        // Actualizar las respuestas de la pregunta
-        const respuestaResponse = await fetch(
-          `http://localhost:8080/respuestas/actualizar/${preguntaId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(respuestasData), // Envía solo las respuestas
-          }
-        );
-
-        if (!respuestaResponse.ok) {
-          throw new Error("Error al actualizar las respuestas");
-        }
       } else {
-        // Crear una nueva pregunta
         preguntaResponse = await fetch(
-          "http://localhost:8080/preguntas/insertar",
+          "http://10.14.1.17:8080/preguntas/insertar",
           {
             method: "POST",
             headers: {
@@ -157,39 +127,48 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
         );
       }
 
-      // Imprime el texto de la respuesta
-      const responseText = await preguntaResponse.text();
-      console.log("Respuesta del servidor:", responseText);
-
-      // Verifica el estado de la respuesta
       if (!preguntaResponse.ok) {
-        throw new Error(
-          `Error en la petición: ${preguntaResponse.status} ${preguntaResponse.statusText}`
-        );
+        throw new Error("Error en la actualización/inserción de la pregunta");
       }
 
-      const preguntaResult = JSON.parse(responseText);
-      const preguntaIdResponse = preguntaResult.id; // Cambia aquí para evitar confusión
+      const preguntaResult = await preguntaResponse.json();
+      const preguntaIdResponse = preguntaResult.id;
 
+      // Asegúrate de que las respuestas incluyan los IDs
       const respuestasData = formData.respuestas.map((respuesta, index) => ({
-        respuesta: respuesta,
+        id: respuesta.id || null, // Usa el ID existente o null si es una nueva respuesta
+        respuesta: respuesta.respuesta,
         correcta: index === formData.correcta ? 1 : 0,
-        preguntaId: preguntaIdResponse, // Cambia aquí para usar la respuesta de preguntaId
+        preguntaId: preguntaIdResponse,
         usuarioId: 103,
       }));
 
-      // Actualiza o inserta las respuestas según sea necesario
-      await fetch("http://localhost:8080/respuestas/insertar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(respuestasData),
-      });
+      // Inserta o actualiza las respuestas
+      await Promise.all(
+        respuestasData.map(async (respuesta) => {
+          const method = respuesta.id ? "PUT" : "POST"; // Decide si es una actualización o inserción
+          const url = respuesta.id
+            ? `http://10.14.1.17:8080/respuestas/actualizar/${respuesta.id}`
+            : "http://10.14.1.17:8080/respuestas/insertar";
+
+          await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(respuesta),
+          });
+        })
+      );
 
       setFormData({
         pregunta: "",
-        respuestas: ["", "", "", ""],
+        respuestas: [
+          { id: null, respuesta: "" },
+          { id: null, respuesta: "" },
+          { id: null, respuesta: "" },
+          { id: null, respuesta: "" },
+        ],
         correcta: 0,
         curiosidad: "",
         categoria: "",
@@ -203,6 +182,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
         "Error al crear/actualizar la pregunta y respuestas:",
         error
       );
+      alert("Hubo un problema al guardar la pregunta. Inténtalo de nuevo.");
     }
   };
 
@@ -216,39 +196,38 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             className="input-question"
             placeholder="Escribe tu pregunta aquí"
             name="pregunta"
-            value={formData.pregunta}
+            value={formData.pregunta || ""}
             onChange={handleChange}
             required
           />
         </div>
 
         <div>
-  <h3 className="question">Escribe las respuestas:</h3>
-  <div className="answers-grid">
-    {formData.respuestas.map((respuesta, index) => (
-      <div key={index} className="answer">
-        <label>
-          <input
-            type="radio"
-            name="correcta"
-            className="radio-btn"
-            value={index}
-            checked={formData.correcta === index}
-            onChange={() => handleCorrectAnswerChange(index)} // Llama a la nueva función
-          />
-          <input
-            type="text"
-            placeholder={`Respuesta ${index + 1}`}
-            value={respuesta}
-            onChange={(e) => handleAnswerChange(index, e.target.value)}
-            required
-          />
-        </label>
-      </div>
-    ))}
-  </div>
-</div>
-
+          <h3 className="question">Escribe las respuestas:</h3>
+          <div className="answers-grid">
+            {formData.respuestas.map((respuesta, index) => (
+              <div key={index} className="answer">
+                <label>
+                  <input
+                    type="radio"
+                    name="correcta"
+                    className="radio-btn"
+                    value={index}
+                    checked={formData.correcta === index}
+                    onChange={() => handleCorrectAnswerChange(index)}
+                  />
+                  <input
+                    type="text"
+                    placeholder={`Respuesta ${index + 1}`}
+                    value={respuesta.respuesta || ""}
+                    onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    required
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div>
           <h3 className="question">Selecciona la categoría:</h3>

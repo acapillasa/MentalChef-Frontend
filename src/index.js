@@ -13,12 +13,13 @@ import Instructions from "./components/principales/Instructions";
 import GameExample from "./components/principales/GameExample";
 import QuickGame from "./components/principales/QuickGame";
 import Footer from "./components/globales/Footer";
-import Login from "./components/Login"; // Importa el componente de Login
+import Login from "./components/autorizacion/Login"; // Importa el componente de Login
 import QuickGameGame from "components/QuickGameGame";
 import CampanyaSelector from "components/CampanyaSelector";
 import CrearActualizarPregunta from "components/CrearActualizarPregunta";
 import PreguntasList from "components/PreguntasList";
 import EditarPregunta from "components/EditarPregunta";
+import Register from "components/autorizacion/Register";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -46,6 +47,14 @@ root.render(
         element={
           <>
             <Parallax /> <Login /> <Parallax />{" "}
+          </>
+        }
+      />
+            <Route
+        path="/register"
+        element={
+          <>
+            <Parallax /> <Register /> <Parallax />{" "}
           </>
         }
       />

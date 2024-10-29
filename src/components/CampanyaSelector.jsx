@@ -7,7 +7,7 @@ const CampanyaSelector = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:8080/categorias');
+        const response = await fetch('http://10.14.1.17:8080/categorias');
         const data = await response.json();
         setCategorias(data); // Asumiendo que data es un array de objetos con la propiedad 'categoria'
       } catch (error) {
@@ -37,7 +37,7 @@ const CampanyaSelector = () => {
         <button className="flecha izquierda" onClick={anteriorGrupo}>&lt;</button>
         <div className="contenido">
           <img
-            src={`http://localhost:8080/images/categorias/${categorias[indiceActual].categoria}.jpg`} // URL de la imagen
+            src={`http://10.14.1.17:8080/images/categorias/${categorias[indiceActual].categoria}.jpg`} // URL de la imagen
             alt={`Imagen de ${categorias[indiceActual].categoria}`} // Texto alternativo para la imagen
             className="imagen-campana"
           />

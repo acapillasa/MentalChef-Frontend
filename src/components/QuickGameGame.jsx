@@ -15,7 +15,7 @@ const QuickGameGame = () => {
 
   const fetchPregunta = async () => {
     try {
-      const response = await fetch("http://localhost:8080/preguntas/alAzar");
+      const response = await fetch("http://10.14.1.17:8080/preguntas/alAzar");
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       setPregunta(data);
@@ -55,7 +55,7 @@ const QuickGameGame = () => {
     <div className="game">
       <div className="pregunta-imagen-container" onClick={handleClickImagen}>
         <img
-          src={`http://localhost:8080/${pregunta.imagen}`}
+          src={`http://10.14.1.17:8080/${pregunta.imagen}`}
           alt="Imagen relacionada con la pregunta"
         />
         {pregunta.curiosidad && mostrarCuriosidad && ( // Muestra la curiosidad solo si está activada
