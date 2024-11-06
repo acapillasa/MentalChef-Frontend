@@ -15,7 +15,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
   const dificultades = ["Facil", "Media", "Dificil"];
 
   useEffect(() => {
-    fetch("http://10.14.1.17:8080/categorias")
+    fetch("https://10.14.1.17:8080/categorias")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -26,7 +26,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
       if (preguntaId) {
         try {
           const response = await fetch(
-            `http://10.14.1.17:8080/preguntas/${preguntaId}`
+            `https://10.14.1.17:8080/preguntas/${preguntaId}`
           );
           const data = await response.json();
           console.log("Datos de la pregunta:", data);
@@ -105,7 +105,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
       let preguntaResponse;
       if (preguntaId) {
         preguntaResponse = await fetch(
-          `http://10.14.1.17:8080/preguntas/actualizar/${preguntaId}`,
+          `https://10.14.1.17:8080/preguntas/actualizar/${preguntaId}`,
           {
             method: "PUT",
             headers: {
@@ -116,7 +116,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
         );
       } else {
         preguntaResponse = await fetch(
-          "http://10.14.1.17:8080/preguntas/insertar",
+          "https://10.14.1.17:8080/preguntas/insertar",
           {
             method: "POST",
             headers: {
@@ -148,8 +148,8 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
         respuestasData.map(async (respuesta) => {
           const method = respuesta.id ? "PUT" : "POST"; // Decide si es una actualización o inserción
           const url = respuesta.id
-            ? `http://10.14.1.17:8080/respuestas/actualizar/${respuesta.id}`
-            : "http://10.14.1.17:8080/respuestas/insertar";
+            ? `https://10.14.1.17:8080/respuestas/actualizar/${respuesta.id}`
+            : "https://10.14.1.17:8080/respuestas/insertar";
 
           await fetch(url, {
             method: method,

@@ -33,7 +33,7 @@ const PreguntasList = () => {
 
   const fetchPreguntas = async () => {
     try {
-      const response = await fetch("http://10.14.1.17:8080/preguntas", {
+      const response = await fetch("https://10.14.1.17:8080/preguntas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

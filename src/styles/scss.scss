@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Colores
 $primary-color: #ffb347;
 $primary-color-hover: #df9a3b;
@@ -629,7 +633,7 @@ header {
 
     &.mostrar-curiosidad .curiosidad {
       display: flex; // Mostrar cuando se haga clic
-      background: url("http://localhost:8080/${pregunta.imagen}") no-repeat
+      background: url("https://10.14.1.17:8080/${pregunta.imagen}") no-repeat
         center center;
       background-size: cover;
       background-color: $blanco-transparente;
