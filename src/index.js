@@ -21,6 +21,9 @@ import PreguntasList from "components/PreguntasList";
 import EditarPregunta from "components/EditarPregunta";
 import Register from "components/autorizacion/Register";
 import MiCocina from "components/zona-pinche/MiCocina";
+import EventoGame from "components/zona-pinche/EventoGame"; // Importa el nuevo componente
+import PreguntaDiariaGame from "components/zona-pinche/PreguntaDiariaGame"; // Importa el componente para la pregunta diaria
+import CampanyaGame from "components/zona-pinche/CampanyaGame"; // Importa el componente para el detalle de la categoría
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -96,6 +99,30 @@ root.render(
         element={
           <>
             <Parallax /> <EditarPregunta /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/evento/:categoria" // Nueva ruta para el detalle del evento
+        element={
+          <>
+            <Parallax /> <EventoGame /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/preguntaDiaria" // Nueva ruta para la pregunta diaria
+        element={
+          <>
+            <Parallax /> <PreguntaDiariaGame /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/categoria/:categoria" // Nueva ruta para el detalle de la categoría
+        element={
+          <>
+            <Parallax /> <CampanyaGame /> <Parallax />{" "}
           </>
         }
       />

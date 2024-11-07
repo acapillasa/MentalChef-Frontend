@@ -1,17 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import PreguntaDiariaCard from './PreguntaDiariaCard';
 
-const PreguntaDiariaSelector = () => {
+const PreguntaDiariaSelector = ({ resultado }) => {
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [storedResultado, setStoredResultado] = useState(null);
+
+  useEffect(() => {
+    const lastAnsweredDate = localStorage.getItem('lastAnsweredDate');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (lastAnsweredDate === today) {
+      setIsAnswered(true);
+      const storedResult = localStorage.getItem('resultado');
+      setStoredResultado(storedResult === 'true');
+    } else if (resultado !== undefined) {
+      setIsAnswered(true);
+      setStoredResultado(resultado);
+      localStorage.setItem('resultado', resultado);
+      localStorage.setItem('lastAnsweredDate', today);
+    }
+  }, [resultado]);
+
+  const handleQuestionClick = () => {
+    console.log('Question clicked');
+    setIsAnswered(true); // Actualiza el estado cuando se hace clic en la pregunta
+  };
+
   return (
     <div className="campana text-secondary bg-white shadow-md rounded-lg p-6 mb-4">
-      <h2 className="text-2xl font-bold mb-4">Pregunta diaria</h2>
       <div className="contenedor-campana">
         <div className="contenido">
-          <button
-            role="button"
-            className="bg-yellow-500 text-white font-semibold py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
-          >
-            <span className="golden-text">Responder</span>
-          </button>
+          <PreguntaDiariaCard 
+            onQuestionClick={handleQuestionClick} 
+            isAnswered={isAnswered} 
+            resultado={storedResultado} // Pasar el resultado al componente PreguntaDiariaCard
+          />
         </div>
       </div>
     </div>
