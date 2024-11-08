@@ -15,7 +15,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
   const dificultades = ["Facil", "Media", "Dificil"];
 
   useEffect(() => {
-    fetch("https://10.14.1.17:8080/categorias")
+    fetch("https://10.14.1.17:8080/categorias/categoriasSinEvento")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -193,7 +193,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
           <h3 className="question">Escribe la pregunta:</h3>
           <input
             type="text"
-            className="input-question"
+            className="input-question text-secondary"
             placeholder="Escribe tu pregunta aquí"
             name="pregunta"
             value={formData.pregunta || ""}
@@ -220,6 +220,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
                     type="text"
                     placeholder={`Respuesta ${index + 1}`}
                     value={respuesta.respuesta || ""}
+                    className="input-answer text-secondary"
                     onChange={(e) => handleAnswerChange(index, e.target.value)}
                     required
                   />
@@ -234,6 +235,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
           <select
             name="categoria"
             value={formData.categoria}
+            className="select-category text-secondary"
             onChange={handleChange}
             required
           >
@@ -251,6 +253,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
           <select
             name="dificultad"
             value={formData.dificultad}
+            className="select-difficulty text-secondary"
             onChange={handleChange}
             required
           >
@@ -268,6 +271,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
           <textarea
             name="curiosidad"
             value={formData.curiosidad}
+            className="input-curiosity text-secondary border"
             onChange={handleChange}
             placeholder="Escribe aquí la curiosidad relacionada con la pregunta"
             required

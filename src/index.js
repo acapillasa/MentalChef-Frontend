@@ -5,7 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./styles/scss.scss";
 import "./styles/tailwind.css";
-import './styles/output.css';
+import "./styles/output.css";
 import Header from "./components/globales/Header";
 import ButtonDarkMode from "./components/globales/ButtonDarkMode";
 import Parallax from "./components/globales/Parallax";
@@ -24,6 +24,7 @@ import MiCocina from "components/zona-pinche/MiCocina";
 import EventoGame from "components/zona-pinche/EventoGame"; // Importa el nuevo componente
 import PreguntaDiariaGame from "components/zona-pinche/PreguntaDiariaGame"; // Importa el componente para la pregunta diaria
 import CampanyaGame from "components/zona-pinche/CampanyaGame"; // Importa el componente para el detalle de la categoría
+import TiendaVirtual from "components/tienda/TiendaVirtual";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -75,6 +76,14 @@ root.render(
         element={
           <>
             <Parallax /> <MiCocina /> <Parallax />{" "}
+          </>
+        }
+      />
+      <Route
+        path="/Tienda"
+        element={
+          <>
+            <Parallax /> <TiendaVirtual /> <Parallax />{" "}
           </>
         }
       />
