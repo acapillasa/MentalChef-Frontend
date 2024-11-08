@@ -13,6 +13,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
   });
 
   const dificultades = ["Facil", "Media", "Dificil"];
+  const usuarioId = 103; // Asume que el usuarioId es 103, ajusta según sea necesario
 
   useEffect(() => {
     fetch("https://10.14.1.17:8080/categorias/categoriasSinEvento")
@@ -38,150 +39,82 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             categoria: data.categoria.categoria,
             dificultad: data.dificultad,
             imagen: data.imagen,
-            respuestas:
-              data.respuestas.map((res) => ({
-                id: res.id, // Asegúrate de incluir el ID de la respuesta
-                respuesta: res.respuesta,
-                correcta: res.correcta,
-              })) || prev.respuestas,
-            correcta:
-              data.respuestas.findIndex((res) => res.correcta) !== -1
-                ? data.respuestas.findIndex((res) => res.correcta)
-                : 0,
+            respuestas: data.respuestas.map((r) => r.respuesta),
+            correcta: data.respuestas.findIndex((r) => r.correcta),
           }));
         } catch (error) {
           console.error("Error fetching pregunta:", error);
         }
       }
     };
+
     fetchPregunta();
   }, [preguntaId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleAnswerChange = (index, value) => {
-    const newRespuestas = [...formData.respuestas];
-    newRespuestas[index] = value;
-    setFormData({
-      ...formData,
-      respuestas: newRespuestas,
-    });
-  };
-
-  const handleCorrectAnswerChange = (index) => {
-    setFormData({
-      ...formData,
-      correcta: index,
-    });
+    if (name.startsWith("respuesta-")) {
+      const index = parseInt(name.split("-")[1], 10);
+      const nuevasRespuestas = [...formData.respuestas];
+      nuevasRespuestas[index] = value;
+      setFormData({ ...formData, respuestas: nuevasRespuestas });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const imageUrl = `images/categorias/${formData.categoria}.jpg`;
-
-    const preguntaData = {
-      pregunta: formData.pregunta,
-      curiosidad: formData.curiosidad,
-      categoria: {
-        categoria: formData.categoria,
-      },
-      dificultad: formData.dificultad,
-      imagen: imageUrl,
-      fechacreacion: new Date().toISOString(),
-      fechaactualizacion: new Date().toISOString(),
-      usuario: {
-        id: 103,
-      },
-    };
-
     try {
-      let preguntaResponse;
-      if (preguntaId) {
-        preguntaResponse = await fetch(
-          `https://10.14.1.17:8080/preguntas/actualizar/${preguntaId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(preguntaData),
-          }
-        );
-      } else {
-        preguntaResponse = await fetch(
-          "https://10.14.1.17:8080/preguntas/insertar",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(preguntaData),
-          }
-        );
-      }
+      // Crear la pregunta
+      const preguntaResponse = await fetch("https://10.14.1.17:8080/preguntas/insertar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pregunta: formData.pregunta,
+          curiosidad: formData.curiosidad,
+          categoria: formData.categoria,
+          dificultad: formData.dificultad,
+          imagen: formData.imagen,
+        }),
+      });
 
       if (!preguntaResponse.ok) {
-        throw new Error("Error en la actualización/inserción de la pregunta");
+        throw new Error("Error al crear la pregunta");
       }
 
-      const preguntaResult = await preguntaResponse.json();
-      const preguntaIdResponse = preguntaResult.id;
+      const preguntaData = await preguntaResponse.json();
+      const preguntaId = preguntaData.id;
 
-      // Asegúrate de que las respuestas incluyan los IDs
-      const respuestasData = formData.respuestas.map((respuesta, index) => ({
-        id: respuesta.id || null, // Usa el ID existente o null si es una nueva respuesta
-        respuesta: respuesta.respuesta,
-        correcta: index === formData.correcta ? 1 : 0,
-        preguntaId: preguntaIdResponse,
-        usuarioId: 103,
-      }));
-
-      // Inserta o actualiza las respuestas
-      await Promise.all(
-        respuestasData.map(async (respuesta) => {
-          const method = respuesta.id ? "PUT" : "POST"; // Decide si es una actualización o inserción
-          const url = respuesta.id
-            ? `https://10.14.1.17:8080/respuestas/actualizar/${respuesta.id}`
-            : "https://10.14.1.17:8080/respuestas/insertar";
-
-          await fetch(url, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(respuesta),
-          });
+      // Crear las respuestas
+      const respuestasPromises = formData.respuestas.map((respuesta, index) =>
+        fetch("https://10.14.1.17:8080/respuestas/insertar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            respuesta,
+            correcta: index === formData.correcta,
+            preguntaId,
+            usuarioId, // Añadir usuarioId al cuerpo de la solicitud
+          }),
         })
       );
 
-      setFormData({
-        pregunta: "",
-        respuestas: [
-          { id: null, respuesta: "" },
-          { id: null, respuesta: "" },
-          { id: null, respuesta: "" },
-          { id: null, respuesta: "" },
-        ],
-        correcta: 0,
-        curiosidad: "",
-        categoria: "",
-        dificultad: "",
-        imagen: "",
-      });
+      const respuestasResponses = await Promise.all(respuestasPromises);
 
-      console.log("Pregunta y respuestas creadas/actualizadas con éxito");
+      // Verificar si todas las respuestas se guardaron correctamente
+      const allResponsesOk = respuestasResponses.every(response => response.ok);
+      if (!allResponsesOk) {
+        throw new Error("Error al crear una o más respuestas");
+      }
+
+      console.log("Pregunta y respuestas creadas con éxito");
     } catch (error) {
-      console.error(
-        "Error al crear/actualizar la pregunta y respuestas:",
-        error
-      );
+      console.error("Error al crear la pregunta y respuestas:", error);
       alert("Hubo un problema al guardar la pregunta. Inténtalo de nuevo.");
     }
   };
@@ -211,17 +144,18 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
                   <input
                     type="radio"
                     name="correcta"
-                    className="radio-btn"
                     value={index}
                     checked={formData.correcta === index}
-                    onChange={() => handleCorrectAnswerChange(index)}
+                    onChange={handleChange}
+                    className="mr-2"
                   />
                   <input
                     type="text"
-                    placeholder={`Respuesta ${index + 1}`}
-                    value={respuesta.respuesta || ""}
                     className="input-answer text-secondary"
-                    onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    placeholder={`Respuesta ${index + 1}`}
+                    name={`respuesta-${index}`}
+                    value={respuesta}
+                    onChange={handleChange}
                     required
                   />
                 </label>
@@ -231,7 +165,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
         </div>
 
         <div>
-          <h3 className="question">Selecciona la categoría:</h3>
+          <h3 className="question">Selecciona una categoría:</h3>
           <select
             name="categoria"
             value={formData.categoria}
@@ -273,13 +207,12 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             value={formData.curiosidad}
             className="input-curiosity text-secondary border"
             onChange={handleChange}
-            placeholder="Escribe aquí la curiosidad relacionada con la pregunta"
-            required
+            placeholder="Escribe una curiosidad aquí"
           />
         </div>
 
-        <button type="submit" className="submit-btn">
-          {preguntaId ? "Actualizar" : "Enviar"}
+        <button type="submit" className="btn-submit text-secondary">
+          Guardar Pregunta
         </button>
       </form>
     </div>
