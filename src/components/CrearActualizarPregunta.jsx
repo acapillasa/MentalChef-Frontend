@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const CrearActualizarPregunta = ({ preguntaId }) => {
+const CrearActualizarPregunta = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     pregunta: "",
-    respuestas: ["", "", "", ""], // Cuatro respuestas
+    respuestas: [{ idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }], // Cuatro respuestas
     correcta: 0, // Índice de la respuesta correcta
     curiosidad: "",
     categoria: "",
@@ -24,10 +27,10 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
 
   useEffect(() => {
     const fetchPregunta = async () => {
-      if (preguntaId) {
+      if (id) {
         try {
           const response = await fetch(
-            `https://10.14.1.17:8080/preguntas/${preguntaId}`
+            `https://10.14.1.17:8080/preguntas/${id}`
           );
           const data = await response.json();
           console.log("Datos de la pregunta:", data);
@@ -39,7 +42,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
             categoria: data.categoria.categoria,
             dificultad: data.dificultad,
             imagen: data.imagen,
-            respuestas: data.respuestas.map((r) => r.respuesta),
+            respuestas: data.respuestas.map((r) => ({ idRespuesta: r.id, respuesta: r.respuesta })),
             correcta: data.respuestas.findIndex((r) => r.correcta),
           }));
         } catch (error) {
@@ -49,15 +52,17 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
     };
 
     fetchPregunta();
-  }, [preguntaId]);
+  }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     if (name.startsWith("respuesta-")) {
       const index = parseInt(name.split("-")[1], 10);
       const nuevasRespuestas = [...formData.respuestas];
-      nuevasRespuestas[index] = value;
+      nuevasRespuestas[index].respuesta = value;
       setFormData({ ...formData, respuestas: nuevasRespuestas });
+    } else if (type === "radio" && name === "correcta") {
+      setFormData({ ...formData, correcta: parseInt(value, 10) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -66,55 +71,97 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Crear la pregunta
-      const preguntaResponse = await fetch("https://10.14.1.17:8080/preguntas/insertar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pregunta: formData.pregunta,
-          curiosidad: formData.curiosidad,
-          categoria: formData.categoria,
-          dificultad: formData.dificultad,
-          imagen: formData.imagen,
-        }),
-      });
+      if (id) {
+        // Actualizar la pregunta existente
+        const preguntaResponse = await fetch(`https://10.14.1.17:8080/preguntas/actualizar/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pregunta: formData.pregunta,
+            curiosidad: formData.curiosidad,
+            categoria: formData.categoria,
+            dificultad: formData.dificultad,
+            imagen: formData.imagen,
+          }),
+        });
 
-      if (!preguntaResponse.ok) {
-        throw new Error("Error al crear la pregunta");
-      }
+        if (!preguntaResponse.ok) {
+          throw new Error("Error al actualizar la pregunta");
+        }
 
-      const preguntaData = await preguntaResponse.json();
-      const preguntaId = preguntaData.id;
+        // Actualizar las respuestas
+        const respuestas = formData.respuestas.map((respuesta, index) => ({
+          idRespuesta: respuesta.idRespuesta,
+          respuesta: respuesta.respuesta,
+          correcta: index === formData.correcta,
+          preguntaId: id,
+          usuarioId,
+        }));
 
-      // Crear las respuestas
-      const respuestasPromises = formData.respuestas.map((respuesta, index) =>
-        fetch("https://10.14.1.17:8080/respuestas/insertar", {
+        const respuestasResponse = await fetch(`https://10.14.1.17:8080/respuestas/actualizarLista/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(respuestas),
+        });
+
+        if (!respuestasResponse.ok) {
+          throw new Error("Error al actualizar las respuestas");
+        }
+
+        console.log("Pregunta y respuestas actualizadas con éxito");
+      } else {
+        // Crear una nueva pregunta
+        const preguntaResponse = await fetch("https://10.14.1.17:8080/preguntas/insertar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            respuesta,
-            correcta: index === formData.correcta,
-            preguntaId,
-            usuarioId, // Añadir usuarioId al cuerpo de la solicitud
+            pregunta: formData.pregunta,
+            curiosidad: formData.curiosidad,
+            categoria: formData.categoria,
+            dificultad: formData.dificultad,
+            imagen: formData.imagen,
           }),
-        })
-      );
+        });
 
-      const respuestasResponses = await Promise.all(respuestasPromises);
+        if (!preguntaResponse.ok) {
+          throw new Error("Error al crear la pregunta");
+        }
 
-      // Verificar si todas las respuestas se guardaron correctamente
-      const allResponsesOk = respuestasResponses.every(response => response.ok);
-      if (!allResponsesOk) {
-        throw new Error("Error al crear una o más respuestas");
+        const preguntaData = await preguntaResponse.json();
+        const preguntaId = preguntaData.id;
+
+        // Crear las respuestas en una sola solicitud
+        const respuestas = formData.respuestas.map((respuesta, index) => ({
+          respuesta: respuesta.respuesta,
+          correcta: index === formData.correcta,
+          preguntaId,
+          usuarioId,
+        }));
+
+        const respuestasResponse = await fetch("https://10.14.1.17:8080/respuestas/insertarLista", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(respuestas),
+        });
+
+        if (!respuestasResponse.ok) {
+          throw new Error("Error al crear las respuestas");
+        }
+
+        console.log("Pregunta y respuestas creadas con éxito");
       }
 
-      console.log("Pregunta y respuestas creadas con éxito");
+      navigate("/ListaPreguntas");
     } catch (error) {
-      console.error("Error al crear la pregunta y respuestas:", error);
+      console.error("Error al crear/actualizar la pregunta y respuestas:", error);
       alert("Hubo un problema al guardar la pregunta. Inténtalo de nuevo.");
     }
   };
@@ -154,7 +201,7 @@ const CrearActualizarPregunta = ({ preguntaId }) => {
                     className="input-answer text-secondary"
                     placeholder={`Respuesta ${index + 1}`}
                     name={`respuesta-${index}`}
-                    value={respuesta}
+                    value={respuesta.respuesta}
                     onChange={handleChange}
                     required
                   />

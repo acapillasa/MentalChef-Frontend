@@ -107,7 +107,7 @@ root.render(
         path="/editarPregunta/:id"
         element={
           <>
-            <Parallax /> <EditarPregunta /> <Parallax />{" "}
+            <Parallax /> <CrearActualizarPregunta /> <Parallax />{" "}
           </>
         }
       />

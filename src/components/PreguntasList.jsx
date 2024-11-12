@@ -8,27 +8,6 @@ const PreguntasList = () => {
 
   useEffect(() => {
     fetchPreguntas();
-
-    // Usar document.querySelectorAll para seleccionar y estilizar botones
-    setTimeout(() => {
-      const buttons = document.querySelectorAll("button");
-      buttons.forEach((button) => {
-        button.style.backgroundColor = "#ffb347";
-        button.style.color = "#fff";
-        button.style.border = "none";
-        button.style.padding = "10px 15px";
-        button.style.margin = "5px";
-        button.style.cursor = "pointer";
-
-        button.addEventListener("mouseover", () => {
-          button.style.backgroundColor = "#df9a3b";
-        });
-
-        button.addEventListener("mouseout", () => {
-          button.style.backgroundColor = "#ffb347";
-        });
-      });
-    }, 500);
   }, []);
 
   const fetchPreguntas = async () => {
@@ -53,20 +32,17 @@ const PreguntasList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/preguntas/${id}`, {
+      const response = await fetch(`https://10.14.1.17:8080/preguntas/eliminar/${id}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
 
       if (response.ok) {
-        fetchPreguntas();
+        setPreguntas(preguntas.filter((pregunta) => pregunta.id !== id));
       } else {
         console.error("Error al eliminar la pregunta");
       }
     } catch (error) {
-      console.error("Error al eliminar pregunta:", error);
+      console.error("Error al eliminar la pregunta:", error);
     }
   };
 
