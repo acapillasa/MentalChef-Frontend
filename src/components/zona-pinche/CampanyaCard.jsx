@@ -7,7 +7,7 @@ const CampanyaCard = ({ categoria }) => {
       <h2 className="text-2xl font-bold text-secondary mb-4">Campaña</h2>
       <Link to={`/categoria/${categoria.categoria}`}>
         <img
-          src={`https://10.14.1.17:8080/images/categorias/${categoria.categoria}.jpg`} // URL de la imagen
+          src={`/images/categorias/${categoria.categoria}.jpg`} // URL de la imagen
           alt={`Imagen de ${categoria.categoria}`} // Texto alternativo para la imagen
           className="imagen-campana rounded-lg shadow-md"
         />

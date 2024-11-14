@@ -9,7 +9,7 @@ const EventoSelector = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('https://10.14.1.17:8080/categorias/categoriasConEvento'); // Asegúrate de que esta URL sea correcta
+        const response = await fetch('/categorias/categoriasConEvento'); // Asegúrate de que esta URL sea correcta
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

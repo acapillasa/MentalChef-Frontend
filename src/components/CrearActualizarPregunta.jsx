@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, } from 'react-router-dom';
 
 const CrearActualizarPregunta = () => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const CrearActualizarPregunta = () => {
   const usuarioId = 103; // Asume que el usuarioId es 103, ajusta según sea necesario
 
   useEffect(() => {
-    fetch("https://10.14.1.17:8080/categorias/categoriasSinEvento")
+    fetch("/categorias/categoriasSinEvento")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -30,7 +30,7 @@ const CrearActualizarPregunta = () => {
       if (id) {
         try {
           const response = await fetch(
-            `https://10.14.1.17:8080/preguntas/${id}`
+            `/preguntas/${id}`
           );
           const data = await response.json();
           console.log("Datos de la pregunta:", data);
@@ -73,7 +73,7 @@ const CrearActualizarPregunta = () => {
     try {
       if (id) {
         // Actualizar la pregunta existente
-        const preguntaResponse = await fetch(`https://10.14.1.17:8080/preguntas/actualizar/${id}`, {
+        const preguntaResponse = await fetch(`/preguntas/actualizar/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const CrearActualizarPregunta = () => {
           usuarioId,
         }));
 
-        const respuestasResponse = await fetch(`https://10.14.1.17:8080/respuestas/actualizarLista/${id}`, {
+        const respuestasResponse = await fetch(`/respuestas/actualizarLista/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const CrearActualizarPregunta = () => {
         console.log("Pregunta y respuestas actualizadas con éxito");
       } else {
         // Crear una nueva pregunta
-        const preguntaResponse = await fetch("https://10.14.1.17:8080/preguntas/insertar", {
+        const preguntaResponse = await fetch("/preguntas/insertar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,7 +144,7 @@ const CrearActualizarPregunta = () => {
           usuarioId,
         }));
 
-        const respuestasResponse = await fetch("https://10.14.1.17:8080/respuestas/insertarLista", {
+        const respuestasResponse = await fetch("/respuestas/insertarLista", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -258,10 +258,13 @@ const CrearActualizarPregunta = () => {
           />
         </div>
 
-        <button type="submit" className="btn-submit text-secondary">
+        <button type="submit" className="btn-submit bg-blue-500 text-white py-2 px-4 my-4 rounded hover:bg-blue-700">
           Guardar Pregunta
         </button>
       </form>
+      <button onClick={() => navigate(-1)} className="btn-back mt-4 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+        Volver Atrás
+      </button>
     </div>
   );
 };

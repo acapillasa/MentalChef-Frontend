@@ -17,19 +17,19 @@ const Footer = () => {
         <div className="footer-section">
           <h5>Enlaces rápidos</h5>
           <ul>
-            <li><a href="#">Ranking mensual</a></li>
-            <li><a href="#">Contacto</a></li>
-            <li><a href="#">Términos y condiciones</a></li>
-            <li><a href="#">Política de privacidad</a></li>
+            <li><a href="/">Ranking mensual</a></li>
+            <li><a href="/">Contacto</a></li>
+            <li><a href="/">Términos y condiciones</a></li>
+            <li><a href="/">Política de privacidad</a></li>
           </ul>
         </div>
         <div className="footer-section">
           <h5>¡Síguenos!</h5>
           <ul className="social-media">
-            <li><a href="#" className="facebook"><FontAwesomeIcon icon={faFacebook} /> Facebook</a></li>
-            <li><a href="#" className="twitter"><FontAwesomeIcon icon={faTwitter} /> Twitter</a></li>
-            <li><a href="#" className="instagram"><FontAwesomeIcon icon={faInstagram} /> Instagram</a></li>
-            <li><a href="#" className="youtube"><FontAwesomeIcon icon={faYoutube} /> YouTube</a></li>
+            <li><a href="/" className="facebook"><FontAwesomeIcon icon={faFacebook} /> Facebook</a></li>
+            <li><a href="/" className="twitter"><FontAwesomeIcon icon={faTwitter} /> Twitter</a></li>
+            <li><a href="/" className="instagram"><FontAwesomeIcon icon={faInstagram} /> Instagram</a></li>
+            <li><a href="/" className="youtube"><FontAwesomeIcon icon={faYoutube} /> YouTube</a></li>
           </ul>
         </div>
       </div>

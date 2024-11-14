@@ -658,7 +658,7 @@ header {
 
     &.mostrar-curiosidad .curiosidad {
       display: flex; // Mostrar cuando se haga clic
-      background: url("https://10.14.1.17:8080/${pregunta.imagen}") no-repeat
+      background: url("https://10.14.1.60:8443/${pregunta.imagen}") no-repeat
         center center;
       background-size: cover;
       background-color: $blanco-transparente;
@@ -931,17 +931,12 @@ header {
         gap: 10px;
 
         button {
-          background-color: $primary-color;
           color: #fff;
           border: none;
           padding: 10px 20px;
           border-radius: 5px;
           cursor: pointer;
           transition: background-color 0.3s ease;
-
-          &:hover {
-            background-color: #0056b3;
-          }
         }
       }
     }

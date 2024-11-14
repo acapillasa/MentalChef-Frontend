@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "assets/MentalChef-logo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 
-const Header = () => {
+const Header = ({ isLoggedIn, onLogout }) => {
   return (
     <header>
       <div className="header-container">
@@ -33,9 +35,16 @@ const Header = () => {
               <a href="#contacto">Contacto</a>
             </li>
             <li>
-              <Link to="/login" className="login-link">
-                Login
-              </Link>
+              {isLoggedIn ? (
+                <>
+                  <FontAwesomeIcon icon={faUserTie} className="user-icon" />
+                  <button onClick={onLogout} className="logout-btn">Logout</button>
+                </>
+              ) : (
+                <Link to="/login" className="login-link">
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </nav>

@@ -11,7 +11,7 @@ const CampanyaSelector = () => {
     const fetchCategorias = async () => {
       try {
         const response = await fetch(
-          "https://10.14.1.17:8080/categorias/categoriasSinEvento"
+          "/categorias/categoriasSinEvento"
         ); // Asegúrate de que esta URL sea correcta
         if (!response.ok) {
           throw new Error("Network response was not ok");

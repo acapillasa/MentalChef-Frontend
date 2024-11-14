@@ -7,7 +7,7 @@ const EventoGame = () => {
   const { categoria } = useParams();
   const [pregunta, setPregunta] = useState(null);
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null);
-  const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
+  //const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
   const [haRespondido, setHaRespondido] = useState(false);
   const [mostrarCuriosidad, setMostrarCuriosidad] = useState(false); // Estado para mostrar la curiosidad
 
@@ -17,7 +17,7 @@ const EventoGame = () => {
 
   const fetchPregunta = async () => {
     try {
-      const response = await fetch(`https://10.14.1.17:8080/preguntas/categoria/${categoria}`);
+      const response = await fetch(`/preguntas/categoria/${categoria}`);
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       setPregunta(data);
@@ -32,7 +32,7 @@ const EventoGame = () => {
   const handleSeleccionarRespuesta = (respuesta) => {
     if (!haRespondido) {
       setRespuestaSeleccionada(respuesta);
-      setRespuestaEsCorrecta(respuesta.correcta);
+      //setRespuestaEsCorrecta(respuesta.correcta);
       setHaRespondido(true);
     }
   };
@@ -57,7 +57,7 @@ const EventoGame = () => {
     <div className="game">
       <div className="pregunta-imagen-container" onClick={handleClickImagen}>
         <img
-          src={`https://10.14.1.17:8080/${pregunta.imagen}`}
+          src={`/${pregunta.imagen}`}
           alt="Imagen relacionada con la pregunta"
         />
         {pregunta.curiosidad && mostrarCuriosidad && ( // Muestra la curiosidad solo si está activada

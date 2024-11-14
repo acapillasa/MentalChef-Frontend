@@ -9,7 +9,7 @@ const CampanyaGame = () => {
   const [preguntas, setPreguntas] = useState([]);
   const [preguntaActual, setPreguntaActual] = useState(0);
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null);
-  const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
+  //const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
   const [haRespondido, setHaRespondido] = useState(false);
   const [mostrarCuriosidad, setMostrarCuriosidad] = useState(false); // Estado para mostrar la curiosidad
   const [juegoTerminado, setJuegoTerminado] = useState(false); // Estado para indicar si el juego ha terminado
@@ -20,7 +20,7 @@ const CampanyaGame = () => {
 
   const fetchPreguntas = async () => {
     try {
-      const response = await fetch(`https://10.14.1.17:8080/preguntas/categoria/${categoria}`);
+      const response = await fetch(`/preguntas/categoria/${categoria}`);
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       setPreguntas(data);
@@ -37,7 +37,7 @@ const CampanyaGame = () => {
   const handleSeleccionarRespuesta = (respuesta) => {
     if (!haRespondido) {
       setRespuestaSeleccionada(respuesta);
-      setRespuestaEsCorrecta(respuesta.correcta);
+      //setRespuestaEsCorrecta(respuesta.correcta);
       setHaRespondido(true);
     }
   };
@@ -76,7 +76,7 @@ const CampanyaGame = () => {
     <div className="game">
       <div className="pregunta-imagen-container" onClick={handleClickImagen}>
         <img
-          src={`https://10.14.1.17:8080/${pregunta.imagen}`}
+          src={`/${pregunta.imagen}`}
           alt="Imagen relacionada con la pregunta"
         />
         {pregunta.curiosidad && mostrarCuriosidad && ( // Muestra la curiosidad solo si está activada

@@ -24,7 +24,7 @@ const PreguntaDiariaGame = () => {
 
   const fetchPregunta = async () => {
     try {
-      const response = await fetch("https://10.14.1.17:8080/preguntas/diaria");
+      const response = await fetch("/preguntas/diaria");
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       setPregunta(data);
@@ -71,7 +71,7 @@ const PreguntaDiariaGame = () => {
     <div className="game">
       <div className="pregunta-imagen-container" onClick={handleClickImagen}>
         <img
-          src={`https://10.14.1.17:8080/${pregunta.imagen}`}
+          src={`/${pregunta.imagen}`}
           alt="Imagen relacionada con la pregunta"
         />
         {pregunta.curiosidad && mostrarCuriosidad && ( // Muestra la curiosidad solo si está activada

@@ -5,7 +5,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 const QuickGameGame = () => {
   const [pregunta, setPregunta] = useState(null);
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null);
-  const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
+  //const [respuestaEsCorrecta, setRespuestaEsCorrecta] = useState(null);
   const [haRespondido, setHaRespondido] = useState(false);
   const [mostrarCuriosidad, setMostrarCuriosidad] = useState(false); // Estado para mostrar la curiosidad
 
@@ -15,7 +15,7 @@ const QuickGameGame = () => {
 
   const fetchPregunta = async () => {
     try {
-      const response = await fetch("https://10.14.1.17:8080/preguntas/alAzar");
+      const response = await fetch("/preguntas/alAzar");
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       setPregunta(data);
@@ -30,7 +30,7 @@ const QuickGameGame = () => {
   const handleSeleccionarRespuesta = (respuesta) => {
     if (!haRespondido) {
       setRespuestaSeleccionada(respuesta);
-      setRespuestaEsCorrecta(respuesta.correcta);
+      //setRespuestaEsCorrecta(respuesta.correcta);
       setHaRespondido(true);
     }
   };
@@ -55,7 +55,7 @@ const QuickGameGame = () => {
     <div className="game">
       <div className="pregunta-imagen-container" onClick={handleClickImagen}>
         <img
-          src={`https://10.14.1.17:8080/${pregunta.imagen}`}
+          src={`/${pregunta.imagen}`}
           alt="Imagen relacionada con la pregunta"
         />
         {pregunta.curiosidad && mostrarCuriosidad && ( // Muestra la curiosidad solo si está activada
