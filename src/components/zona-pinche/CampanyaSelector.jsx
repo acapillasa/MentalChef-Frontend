@@ -1,35 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CampanyaCard from "./CampanyaCard";
 
-const CampanyaSelector = () => {
-  const [categorias, setCategorias] = useState([]);
+const CampanyaSelector = ({ categorias }) => {
   const [indiceActual, setIndiceActual] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await fetch(
-          "/categorias/categoriasSinEvento"
-        ); // Asegúrate de que esta URL sea correcta
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        const categoriasFiltradas = data.filter(
-          (categoria) => !categoria.categoria.startsWith("evento_")
-        );
-        setCategorias(categoriasFiltradas);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCategorias();
-  }, []);
 
   const anteriorGrupo = () => {
     setIndiceActual(
@@ -40,18 +13,6 @@ const CampanyaSelector = () => {
   const siguienteGrupo = () => {
     setIndiceActual((prevIndice) => (prevIndice + 1) % categorias.length);
   };
-
-  if (isLoading) {
-    return <div className="text-secondary">Cargando categorías...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="text-secondary">
-        Error al cargar categorías: {error.message}
-      </div>
-    );
-  }
 
   if (categorias.length === 0) {
     return <div className="text-secondary">No hay categorías disponibles.</div>;

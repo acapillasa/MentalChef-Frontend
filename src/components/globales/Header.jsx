@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "assets/MentalChef-logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({ isLoggedIn, onLogout }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
     <header>
       <div className="header-container">
@@ -34,12 +40,26 @@ const Header = ({ isLoggedIn, onLogout }) => {
             <li>
               <a href="#contacto">Contacto</a>
             </li>
-            <li>
+            <li className="relative">
               {isLoggedIn ? (
-                <>
-                  <FontAwesomeIcon icon={faUserTie} className="user-icon" />
-                  <button onClick={onLogout} className="logout-btn">Logout</button>
-                </>
+                <div className="user-menu">
+                  <FontAwesomeIcon 
+                    icon={faUserTie} 
+                    className="user-icon w-6 h-6" 
+                    onClick={toggleDropdown} 
+                  />
+                  {showDropdown && (
+                    <div className="dropdown-menu flex flex-col absolute right-0 mt-2 bg-white shadow-lg rounded">
+                      <Link to="/MiCocina" className="dropdown-link hover:text-black px-4 py-2">Mi Cocina</Link>
+                      <button 
+                        onClick={onLogout} 
+                        className="logout-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <Link to="/login" className="login-link">
                   Login
