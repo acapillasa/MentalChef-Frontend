@@ -1,14 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "assets/MentalChef-logo.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ isLoggedIn, onLogout }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const response = await fetch("/usuarios/me", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const username = await response.text();
+          setUsername(username);
+        } else {
+          console.error("Failed to fetch username");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchUsername();
+    }
+  }, [isLoggedIn]);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/usuarios/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        onLogout();
+        navigate("/");
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -43,19 +86,30 @@ const Header = ({ isLoggedIn, onLogout }) => {
             <li className="relative">
               {isLoggedIn ? (
                 <div className="user-menu">
-                  <FontAwesomeIcon 
-                    icon={faUserTie} 
-                    className="user-icon w-6 h-6" 
-                    onClick={toggleDropdown} 
+                  <FontAwesomeIcon
+                    icon={faUserTie}
+                    className="user-icon cursor-pointer w-6 h-6"
+                    onClick={toggleDropdown}
                   />
                   {showDropdown && (
-                    <div className="dropdown-menu flex flex-col absolute right-0 mt-2 bg-white shadow-lg rounded">
-                      <Link to="/MiCocina" className="dropdown-link hover:text-black px-4 py-2">Mi Cocina</Link>
-                      <button 
-                        onClick={onLogout} 
-                        className="logout-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2"
+                    <div className="dropdown-menu flex flex-col absolute right-0 mr-3 mt-3 bg-white shadow-lg rounded" style={{ width: '200px' }}>
+                      <div className="dropdown-link px-4 py-2 text-center font-bold">
+                        {username}
+                      </div>
+                      <Link to="/MiCocina" className="dropdown-link px-4 py-2 text-center">
+                        Mi Cocina
+                      </Link>
+                      <Link to="/Tienda" className="dropdown-link px-4 py-2 text-center">
+                        Tienda
+                      </Link>
+                      <Link to="/CrearPregunta" className="dropdown-link px-4 py-2 text-center">
+                        Crear Pregunta
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="logout-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 text-center"
                       >
-                        Logout
+                        Log Out
                       </button>
                     </div>
                   )}

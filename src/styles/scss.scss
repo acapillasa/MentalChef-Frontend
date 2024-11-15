@@ -141,6 +141,13 @@ header {
         @include spacing(0, 0);
 
         li {
+          div {
+            div {
+              .dropdown-link {
+                color: black;
+              }
+            }
+          }
           a {
             text-decoration: none;
             font-size: $letra-estandar;

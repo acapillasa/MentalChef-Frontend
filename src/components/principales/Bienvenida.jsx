@@ -8,6 +8,7 @@ const Bienvenida = () => {
       <Link to="/CrearPregunta">Crear Pregunta</Link>
       <Link to="/ListaPreguntas">Lista preguntas</Link>
       <Link to="/Tienda">Tienda</Link>
+      <Link to="/CrearChef">Register Chef</Link>
       <ContadorMonedas />
       <h2>Bienvenidos a MentalChef</h2>
       <p>¡Pon a prueba tus conocimientos de cocina!</p>

@@ -25,6 +25,7 @@ import EventoGame from "components/zona-pinche/EventoGame";
 import PreguntaDiariaGame from "components/zona-pinche/PreguntaDiariaGame";
 import CampanyaGame from "components/zona-pinche/CampanyaGame";
 import TiendaVirtual from "components/tienda/TiendaVirtual";
+import RegisterChef from "components/autorizacion/RegisterChef";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,14 +34,14 @@ const App = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch('/usuarios/isAuthenticated', {
-          method: 'GET',
-          credentials: 'include', // Include cookies in the request
+        const response = await fetch("/usuarios/isAuthenticated", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
         });
         const isAuthenticated = await response.json();
         setIsLoggedIn(isAuthenticated);
       } catch (error) {
-        console.error('Error checking auth status:', error);
+        console.error("Error checking auth status:", error);
       } finally {
         setIsAuthChecked(true);
       }
@@ -83,15 +84,20 @@ const App = () => {
             </>
           }
         />
-        <Route
-          path="/login"
-          element={<Login setIsLoggedIn={handleLogin} />}
-        />
+        <Route path="/login" element={<Login setIsLoggedIn={handleLogin} />} />
         <Route
           path="/register"
           element={
             <>
               <Parallax /> <Register /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/CrearChef"
+          element={
+            <>
+              <Parallax /> <RegisterChef /> <Parallax />
             </>
           }
         />
