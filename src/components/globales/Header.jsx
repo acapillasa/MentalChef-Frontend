@@ -12,7 +12,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async (retryCount = 3) => {
       try {
         const [usernameResponse, monedasVResponse] = await Promise.all([
           fetch("/usuarios/me", {
@@ -32,10 +32,9 @@ const Header = ({ isLoggedIn, onLogout }) => {
         }
 
         if (usernameResponse.ok) {
-          const responseText = await usernameResponse.text();
-          const usernameMatch = responseText.match(/Username=(.*?),/);
-          if (usernameMatch) {
-            setUsername(usernameMatch[1]);
+          const userDetails = await usernameResponse.json();
+          if (userDetails && userDetails.username) {
+            setUsername(userDetails.username);
           } else {
             console.error("Username not found in response");
           }
@@ -45,12 +44,21 @@ const Header = ({ isLoggedIn, onLogout }) => {
 
         if (monedasVResponse.ok) {
           const monedasV = await monedasVResponse.json();
-          setMonedasV(monedasV);
+          if (monedasV !== null && monedasV !== undefined) {
+            setMonedasV(monedasV);
+          } else {
+            console.error("monedasV is null or undefined");
+          }
         } else {
           console.error("Failed to fetch monedasV");
         }
       } catch (error) {
-        console.error("Error:", error);
+        if (retryCount > 0) {
+          console.warn(`Retrying fetchUserData... (${3 - retryCount + 1})`);
+          fetchUserData(retryCount - 1);
+        } else {
+          console.error("Error:", error);
+        }
       }
     };
 

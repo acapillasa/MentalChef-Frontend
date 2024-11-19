@@ -60,6 +60,55 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
       }
     }
 
+    .campanya {
+      background-color: $secondary-color; // Fondo oscuro
+      color: $hover-bg-color; // Color de texto oscuro
+
+      .campana {
+        background-color: $secondary-color; // Fondo oscuro
+        color: $hover-bg-color; // Color de texto oscuro
+
+        .contenedor-campana {
+                color: $hover-bg-color; // Color de texto claro
+        }
+        
+        .flecha {
+          color: $hover-bg-color; // Asegúrate de que el texto sea visible
+        }
+      }
+
+      
+    }
+
+    .grid-container{
+      .eventos {
+        .eventos-container {
+          background-color: $secondary-color; // Fondo oscuro
+          color: $secondary-color; // Color de texto oscuro
+
+          div {
+            span {
+              color: $secondary-color; // Asegúrate de que el texto sea visible
+            }
+          }
+        }
+      }
+    }
+
+    .pregunta-diaria {
+      background-color: $secondary-color; // Fondo oscuro
+      color: $secondary-color; // Color de texto oscuro
+
+      .campana {
+        background-color: $secondary-color; // Fondo oscuro
+      }
+      div {
+        span {
+          color: $secondary-color; // Asegúrate de que el texto sea visible
+        }
+      }
+    }
+
     .btn-oscuro {
       background-color: $hover-bg-color !important;
 

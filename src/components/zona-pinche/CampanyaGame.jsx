@@ -23,6 +23,9 @@ const CampanyaGame = () => {
       const response = await fetch(`/preguntas/categoria/${categoria}`);
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
+      data.forEach(pregunta => {
+        pregunta.respuestas = pregunta.respuestas.sort(() => Math.random() - 0.5); // Randomize the order of answers
+      });
       setPreguntas(data);
       setPreguntaActual(0); // Resetea el índice de la pregunta actual
       setHaRespondido(false); // Resetea el estado de respuesta cuando se obtiene una nueva pregunta

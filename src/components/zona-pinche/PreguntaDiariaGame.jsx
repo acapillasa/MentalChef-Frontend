@@ -27,6 +27,7 @@ const PreguntaDiariaGame = () => {
       const response = await fetch("/preguntas/diaria");
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
+      data.respuestas = data.respuestas.sort(() => Math.random() - 0.5); // Randomize the order of answers
       setPregunta(data);
       setHaRespondido(false); // Resetea el estado de respuesta cuando se obtiene una nueva pregunta
       setRespuestaSeleccionada(null); // Resetea la respuesta seleccionada
