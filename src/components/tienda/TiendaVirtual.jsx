@@ -34,7 +34,7 @@ const TiendaVirtual = () => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold">{ticket.descripcion}</h3>
               <div className="flex items-center">
-                <MonedaVirtual />
+                  <MonedaVirtual />
                 <span className="ml-2 text-xl font-bold">{ticket.puntos} puntos</span>
               </div>
             </div>

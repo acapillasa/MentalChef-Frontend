@@ -1,14 +1,14 @@
 import React from 'react';
 import MonedaVirtual from './MonedaVirtual';
 
-const ContadorMonedas = () => {
+const ContadorMonedas = ({ monedasV }) => {
   return (
-    <div className="flex items-center justify-center p-3 bg-white rounded-full shadow-lg">
-      <div className="mr-5">
+    <div className="flex items-center justify-center p-1 bg-white rounded-full shadow-lg">
+      <div className="mr-2">
         <MonedaVirtual />
       </div>
-      <div className="contador bg-primary text-white font-bold text-2xl ml-4 py-2 px-10 rounded-full shadow-md">
-        <span className="amount">47</span>
+      <div className="contador bg-primary text-white font-bold text-lg ml-2 py-1 px-5 rounded-full shadow-md">
+        <span className="amount">{monedasV}</span>
       </div>
     </div>
   );

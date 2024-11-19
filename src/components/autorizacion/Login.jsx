@@ -19,6 +19,7 @@ const Login = ({ setIsLoggedIn }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
+        credentials: 'include', // Ensure credentials are included
       });
 
       console.log('Request Headers:', {
@@ -45,7 +46,7 @@ const Login = ({ setIsLoggedIn }) => {
         throw new Error('Unexpected response format');
       }
 
-      setIsLoggedIn();
+      setIsLoggedIn(true); // Ensure the state is set to true
       navigate('/MiCocina');
     } catch (error) {
       console.error('Login error:', error);

@@ -54,6 +54,12 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
     background-color: $secondary-color; // Fondo oscuro
     color: $hover-bg-color; // Color de texto oscuro
 
+    div {
+      span {
+        color: $hover-bg-color; // Asegúrate de que el texto sea visible
+      }
+    }
+
     .btn-oscuro {
       background-color: $hover-bg-color !important;
 
@@ -282,13 +288,13 @@ header {
 
 .btn-oscuro {
   position: fixed;
-  top: 20px; // Ajusta la posición vertical
+  top: 5px; // Ajusta la posición vertical
   right: 20px; // Ajusta la posición horizontal
   background-color: $secondary-color !important; // Color de fondo del botón
   color: $blanco-transparente !important; // Color del texto o ícono
   border: none;
-  border-radius: 50%; // Si deseas que sea un botón circular
-  padding: 10px; // Ajusta el tamaño del botón
+  border-radius:50%; // Si deseas que sea un botón circular
+  padding: 6px; // Ajusta el tamaño del botón
   cursor: pointer;
   z-index: 1000; // Asegura que el botón esté por encima de otros elementos de la página
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Añade una sombra para destacar el botón
