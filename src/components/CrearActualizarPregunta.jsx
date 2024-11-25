@@ -71,6 +71,18 @@ const CrearActualizarPregunta = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let preguntaId = id;
+      const newPreguntaData = {
+        pregunta: formData.pregunta,
+        curiosidad: formData.curiosidad,
+        categoria: formData.categoria,
+        dificultad: formData.dificultad,
+        imagen: formData.imagen,
+        usuarioId, // Añadir usuarioId al crear/actualizar
+      };
+
+      console.log("Datos de la pregunta:", JSON.stringify(newPreguntaData, null, 2));
+
       if (id) {
         // Actualizar la pregunta existente
         const preguntaResponse = await fetch(`/preguntas/actualizar/${id}`, {
@@ -78,41 +90,12 @@ const CrearActualizarPregunta = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            pregunta: formData.pregunta,
-            curiosidad: formData.curiosidad,
-            categoria: formData.categoria,
-            dificultad: formData.dificultad,
-            imagen: formData.imagen,
-          }),
+          body: JSON.stringify(newPreguntaData),
         });
 
         if (!preguntaResponse.ok) {
           throw new Error("Error al actualizar la pregunta");
         }
-
-        // Actualizar las respuestas
-        const respuestas = formData.respuestas.map((respuesta, index) => ({
-          idRespuesta: respuesta.idRespuesta,
-          respuesta: respuesta.respuesta,
-          correcta: index === formData.correcta,
-          preguntaId: id,
-          usuarioId,
-        }));
-
-        const respuestasResponse = await fetch(`/respuestas/actualizarLista/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(respuestas),
-        });
-
-        if (!respuestasResponse.ok) {
-          throw new Error("Error al actualizar las respuestas");
-        }
-
-        console.log("Pregunta y respuestas actualizadas con éxito");
       } else {
         // Crear una nueva pregunta
         const preguntaResponse = await fetch("/preguntas/insertar", {
@@ -120,13 +103,7 @@ const CrearActualizarPregunta = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            pregunta: formData.pregunta,
-            curiosidad: formData.curiosidad,
-            categoria: formData.categoria,
-            dificultad: formData.dificultad,
-            imagen: formData.imagen,
-          }),
+          body: JSON.stringify(newPreguntaData),
         });
 
         if (!preguntaResponse.ok) {
@@ -134,31 +111,33 @@ const CrearActualizarPregunta = () => {
         }
 
         const preguntaData = await preguntaResponse.json();
-        const preguntaId = preguntaData.id;
-
-        // Crear las respuestas en una sola solicitud
-        const respuestas = formData.respuestas.map((respuesta, index) => ({
-          respuesta: respuesta.respuesta,
-          correcta: index === formData.correcta,
-          preguntaId,
-          usuarioId,
-        }));
-
-        const respuestasResponse = await fetch("/respuestas/insertarLista", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(respuestas),
-        });
-
-        if (!respuestasResponse.ok) {
-          throw new Error("Error al crear las respuestas");
-        }
-
-        console.log("Pregunta y respuestas creadas con éxito");
+        preguntaId = preguntaData.id;
       }
 
+      // Crear o actualizar las respuestas
+      const respuestas = formData.respuestas.map((respuesta, index) => ({
+        idRespuesta: respuesta.idRespuesta,
+        respuesta: respuesta.respuesta,
+        correcta: index === formData.correcta,
+        preguntaId,
+        usuarioId,
+      }));
+
+      console.log("Datos de las respuestas:", JSON.stringify(respuestas, null, 2));
+
+      const respuestasResponse = await fetch(id ? `/respuestas/actualizarLista/${id}` : "/respuestas/insertarLista", {
+        method: id ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(respuestas),
+      });
+
+      if (!respuestasResponse.ok) {
+        throw new Error(`Error al ${id ? "actualizar" : "crear"} las respuestas`);
+      }
+
+      console.log(`Pregunta y respuestas ${id ? "actualizadas" : "creadas"} con éxito`);
       navigate("/ListaPreguntas");
     } catch (error) {
       console.error("Error al crear/actualizar la pregunta y respuestas:", error);
