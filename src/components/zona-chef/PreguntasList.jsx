@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ScrollToTopButton from './ScrollToTopButton';
-import ScrollToBottomButton from './ScrollToBottomButton';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ScrollToTopButton from "../globales/ScrollToTopButton";
+import ScrollToBottomButton from "../globales/ScrollToBottomButton";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faArrowUp, faArrowDown);
 
 const PreguntasList = () => {
   const [preguntas, setPreguntas] = useState([]);
-  const [filter, setFilter] = useState('all');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -62,12 +62,21 @@ const PreguntasList = () => {
   };
 
   const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas eliminar esta pregunta?"
+    );
+    if (!confirmed) {
+      return;
+    }
     try {
       // Eliminar respuestas asociadas a la pregunta
-      const responseRespuestas = await fetch(`/respuestas/eliminarPorPregunta/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const responseRespuestas = await fetch(
+        `/respuestas/eliminarPorPregunta/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
 
       if (responseRespuestas.ok) {
         console.log("Respuestas eliminadas correctamente");
@@ -100,9 +109,11 @@ const PreguntasList = () => {
         credentials: "include",
       });
       if (response.ok) {
-        setPreguntas(preguntas.map((pregunta) =>
-          pregunta.id === id ? { ...pregunta, verificado: true } : pregunta
-        ));
+        setPreguntas(
+          preguntas.map((pregunta) =>
+            pregunta.id === id ? { ...pregunta, verificado: true } : pregunta
+          )
+        );
       } else {
         console.error("Error al verificar la pregunta");
       }
@@ -121,9 +132,11 @@ const PreguntasList = () => {
         credentials: "include",
       });
       if (response.ok) {
-        setPreguntas(preguntas.map((pregunta) =>
-          pregunta.id === id ? { ...pregunta, verificado: false } : pregunta
-        ));
+        setPreguntas(
+          preguntas.map((pregunta) =>
+            pregunta.id === id ? { ...pregunta, verificado: false } : pregunta
+          )
+        );
       } else {
         console.error("Error al desverificar la pregunta");
       }
@@ -133,9 +146,10 @@ const PreguntasList = () => {
   };
 
   const filteredPreguntas = preguntas.filter((pregunta) => {
-    if (filter === 'verified' && !pregunta.verificado) return false;
-    if (filter === 'unverified' && pregunta.verificado) return false;
-    if (categoryFilter !== 'all' && pregunta.categoria !== categoryFilter) return false;
+    if (filter === "verified" && !pregunta.verificado) return false;
+    if (filter === "unverified" && pregunta.verificado) return false;
+    if (categoryFilter !== "all" && pregunta.categoria !== categoryFilter)
+      return false;
     return true;
   });
 
@@ -143,19 +157,40 @@ const PreguntasList = () => {
     <div className="preguntas-container">
       <h2 className="titulo">Lista de Preguntas</h2>
       <div className="menu flex justify-center space-x-4 mb-4">
-        <button className={`py-2 px-4 rounded ${filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} onClick={() => setFilter('all')}>
+        <button
+          className={`py-2 px-4 rounded ${
+            filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setFilter("all")}
+        >
           Todas
         </button>
-        <button className={`py-2 px-4 rounded ${filter === 'verified' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} onClick={() => setFilter('verified')}>
+        <button
+          className={`py-2 px-4 rounded ${
+            filter === "verified" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setFilter("verified")}
+        >
           Verificadas
         </button>
-        <button className={`py-2 px-4 rounded ${filter === 'unverified' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} onClick={() => setFilter('unverified')}>
+        <button
+          className={`py-2 px-4 rounded ${
+            filter === "unverified" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setFilter("unverified")}
+        >
           Sin Verificar
         </button>
-        <select className="py-2 px-4 rounded bg-orange-700" value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+        <select
+          className="py-2 px-4 rounded bg-orange-700"
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
           <option value="all">Todas las Categorías</option>
           {categories.map((category) => (
-            <option key={category.categoria} value={category.categoria}>{category.categoria}</option>
+            <option key={category.categoria} value={category.categoria}>
+              {category.categoria}
+            </option>
           ))}
         </select>
       </div>
@@ -175,18 +210,30 @@ const PreguntasList = () => {
               </p>
             </div>
             <div className="pregunta-botones">
-              <button className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onClick={() => handleUpdate(pregunta.id)}>
+              <button
+                className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+                onClick={() => handleUpdate(pregunta.id)}
+              >
                 Actualizar
               </button>
-              <button className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700" onClick={() => handleDelete(pregunta.id)}>
+              <button
+                className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
+                onClick={() => handleDelete(pregunta.id)}
+              >
                 Eliminar
               </button>
               {pregunta.verificado ? (
-                <button className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-700" onClick={() => handleUnverify(pregunta.id)}>
+                <button
+                  className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-700"
+                  onClick={() => handleUnverify(pregunta.id)}
+                >
                   Desverificar
                 </button>
               ) : (
-                <button className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-700" onClick={() => handleVerify(pregunta.id)}>
+                <button
+                  className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-700"
+                  onClick={() => handleVerify(pregunta.id)}
+                >
                   Verificar
                 </button>
               )}

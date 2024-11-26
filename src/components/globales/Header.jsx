@@ -9,6 +9,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [username, setUsername] = useState("");
   const [monedasV, setMonedasV] = useState(0);
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,8 @@ const Header = ({ isLoggedIn, onLogout }) => {
           const userDetails = await usernameResponse.json();
           if (userDetails && userDetails.username) {
             setUsername(userDetails.username);
+            setRole(userDetails.role); // Set the role
+            console.log("Rol de " + userDetails.username + " - " + userDetails.role);
           } else {
             console.error("Username not found in response");
           }
@@ -67,6 +70,19 @@ const Header = ({ isLoggedIn, onLogout }) => {
     }
   }, [isLoggedIn, navigate]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showDropdown && !event.target.closest(".dropdown-menu") && !event.target.closest(".user-icon")) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -86,6 +102,10 @@ const Header = ({ isLoggedIn, onLogout }) => {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const handleLinkClick = () => {
+    setShowDropdown(false);
   };
 
   return (
@@ -109,7 +129,9 @@ const Header = ({ isLoggedIn, onLogout }) => {
         <nav>
           <ul>
             <li>
-              <a href="#jugar">Partida Rápida</a>
+            <Link to="/jugar">
+              Partida Rapida
+            </Link>
             </li>
             <li>
               <a href="#ranking">Ranking Mensual</a>
@@ -127,19 +149,32 @@ const Header = ({ isLoggedIn, onLogout }) => {
                     onClick={toggleDropdown}
                   />
                   {showDropdown && (
-                    <div className="dropdown-menu flex flex-col absolute w-48 top-20 mr-3 mt-3 bg-white shadow-lg rounded" >
+                    <div className="dropdown-menu flex flex-col absolute w-48 top-20 mr-3 mt-3 bg-white shadow-lg rounded z-50">
                       <div className="dropdown-link px-4 py-2 text-center font-bold">
                         {username}
                       </div>
-                      <Link to="/MiCocina" className="dropdown-link px-4 py-2 text-center">
+                      <Link to="/MiCocina" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                         Mi Cocina
                       </Link>
-                      <Link to="/Tienda" className="dropdown-link px-4 py-2 text-center">
+                      <Link to="/Tienda" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                         Tienda
                       </Link>
-                      <Link to="/CrearPregunta" className="dropdown-link px-4 py-2 text-center">
+                      <Link to="/CrearPregunta" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                         Crear Pregunta
                       </Link>
+                      <Link to="/EditarPerfil" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                        Editar Perfil
+                      </Link>
+                      {role === "ROLE_CHEF" && (
+                        <>
+                          <Link to="/ListaPreguntas" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                            Lista Preguntas
+                          </Link>
+                          <Link to="/CrearChef" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                            Registrar Chef
+                          </Link>
+                        </>
+                      )}
                       <button
                         onClick={handleLogout}
                         className="logout-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 text-center"

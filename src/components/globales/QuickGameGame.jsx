@@ -11,17 +11,40 @@ const QuickGameGame = () => {
 
   useEffect(() => {
     fetchPregunta();
+    setTimeout(() => {
+      const gameElement = document.querySelector('.game');
+      if (gameElement) {
+        gameElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 700); // Add a slight delay
   }, []); // Se ejecuta solo una vez al montar el componente
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const fetchPregunta = async () => {
     try {
       const response = await fetch("/preguntas/alAzar");
       const data = await response.json();
-      console.log("Respuesta del servidor:", data);
+      console.log("Pregunta:", data);
       setPregunta(data);
       setHaRespondido(false); // Resetea el estado de respuesta cuando se obtiene una nueva pregunta
       setRespuestaSeleccionada(null); // Resetea la respuesta seleccionada
       setMostrarCuriosidad(false); // Resetea el estado de mostrar curiosidad
+
+      // Fetch answers using the question ID
+      const responseRespuestas = await fetch(`/respuestas/preguntaId/${data.id}`);
+      const respuestasData = await responseRespuestas.json();
+      console.log("Respuestas:", respuestasData);
+      setPregunta((prevPregunta) => ({
+        ...prevPregunta,
+        respuestas: shuffleArray(respuestasData), // Randomize the order of the answers
+      }));
     } catch (error) {
       console.error("Error al obtener la pregunta:", error);
     }
@@ -37,6 +60,7 @@ const QuickGameGame = () => {
 
   const handleReiniciarJuego = () => {
     fetchPregunta(); // Vuelve a cargar una nueva pregunta
+    
   };
 
   const handleClickImagen = () => {

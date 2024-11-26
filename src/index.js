@@ -16,16 +16,17 @@ import GameExample from "./components/principales/GameExample";
 import QuickGame from "./components/principales/QuickGame";
 import Footer from "./components/globales/Footer";
 import Login from "./components/autorizacion/Login";
-import QuickGameGame from "components/QuickGameGame";
-import CrearActualizarPregunta from "components/CrearActualizarPregunta";
-import PreguntasList from "components/PreguntasList";
+import QuickGameGame from "components/globales/QuickGameGame";
+import CrearActualizarPregunta from "components/zona-logueado/CrearActualizarPregunta";
+import PreguntasList from "components/zona-chef/PreguntasList";
 import Register from "components/autorizacion/Register";
-import MiCocina from "components/zona-pinche/MiCocina";
+import MiCocina from "components/zona-logueado/MiCocina";
 import EventoGame from "components/zona-pinche/EventoGame";
 import PreguntaDiariaGame from "components/zona-pinche/PreguntaDiariaGame";
 import CampanyaGame from "components/zona-pinche/CampanyaGame";
 import TiendaVirtual from "components/tienda/TiendaVirtual";
 import RegisterChef from "components/autorizacion/RegisterChef";
+import EditarPregunta from "components/zona-chef/EditarPregunta";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -145,7 +146,7 @@ const App = () => {
           path="/editarPregunta/:id"
           element={
             <>
-              <Parallax /> <CrearActualizarPregunta /> <Parallax />
+              <Parallax /> <EditarPregunta /> <Parallax />
             </>
           }
         />
