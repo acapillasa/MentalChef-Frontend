@@ -29,9 +29,7 @@ const CrearActualizarPregunta = () => {
     const fetchPregunta = async () => {
       if (id) {
         try {
-          const response = await fetch(
-            `/preguntas/${id}`
-          );
+          const response = await fetch(`/preguntas/${id}`);
           const data = await response.json();
           console.log("Datos de la pregunta:", data);
           // Supongamos que 'data.respuestas' es un arreglo de objetos que incluye tanto 'respuesta' como 'id'
@@ -39,10 +37,10 @@ const CrearActualizarPregunta = () => {
             ...prev,
             pregunta: data.pregunta,
             curiosidad: data.curiosidad,
-            categoria: data.categoria.categoria,
+            categoria: data.categoria, // Ajustar para asignar directamente la categoría
             dificultad: data.dificultad,
             imagen: data.imagen,
-            respuestas: data.respuestas.map((r) => ({ idRespuesta: r.id, respuesta: r.respuesta })),
+            respuestas: data.respuestas.map((r) => ({ idRespuesta: r.idRespuesta, respuesta: r.respuesta })),
             correcta: data.respuestas.findIndex((r) => r.correcta),
           }));
         } catch (error) {

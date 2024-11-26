@@ -135,7 +135,7 @@ const PreguntasList = () => {
   const filteredPreguntas = preguntas.filter((pregunta) => {
     if (filter === 'verified' && !pregunta.verificado) return false;
     if (filter === 'unverified' && pregunta.verificado) return false;
-    if (categoryFilter !== 'all' && pregunta.categoria.categoria !== categoryFilter) return false;
+    if (categoryFilter !== 'all' && pregunta.categoria !== categoryFilter) return false;
     return true;
   });
 
@@ -171,7 +171,7 @@ const PreguntasList = () => {
                 Verificado: {pregunta.verificado ? "Sí" : "No"}
               </p>
               <p className="pregunta-detalle">
-                Categoría: {pregunta.categoria.categoria}
+                Categoría: {pregunta.categoria}
               </p>
             </div>
             <div className="pregunta-botones">
