@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Cookies from "js-cookie"; // Import js-cookie
 
@@ -27,10 +27,16 @@ import CampanyaGame from "components/zona-pinche/CampanyaGame";
 import TiendaVirtual from "components/tienda/TiendaVirtual";
 import RegisterChef from "components/autorizacion/RegisterChef";
 import EditarPregunta from "components/zona-chef/EditarPregunta";
+import PreguntaDiariaSelector from "./components/zona-pinche/PreguntaDiariaSelector";
+import EditarPerfil from "components/zona-logueado/EditarPerfil";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const [role, setRole] = useState("");
+  const [userData, setUserData] = useState(null);
+  const location = useLocation(); // Move useLocation inside the App component
+  const resultado = location.state?.resultado;
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -41,6 +47,17 @@ const App = () => {
         });
         const isAuthenticated = await response.json();
         setIsLoggedIn(isAuthenticated);
+
+        if (isAuthenticated) {
+          const userResponse = await fetch("/usuarios/me", {
+            method: "GET",
+            credentials: "include",
+          });
+          const userData = await userResponse.json();
+          console.log("User data:", userData);
+          setRole(userData.role);
+          setUserData(userData);
+        }
       } catch (error) {
         console.error("Error checking auth status:", error);
       } finally {
@@ -66,7 +83,7 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
+    <>
       <ButtonDarkMode />
       <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <Routes>
@@ -75,7 +92,13 @@ const App = () => {
           element={
             <>
               <Parallax />
-              <Bienvenida />
+              {role === "ROLE_PINCHE" ? (
+                <div className="pregunta-diaria w-full">
+                  <PreguntaDiariaSelector resultado={resultado} />
+                </div>
+              ) : (
+                <Bienvenida />
+              )}
               <Parallax />
               <Instructions />
               <GameExample />
@@ -91,6 +114,14 @@ const App = () => {
           element={
             <>
               <Parallax /> <Register /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/EditarPerfil"
+          element={
+            <>
+              <Parallax /> <EditarPerfil user={userData} /> <Parallax />
             </>
           }
         />
@@ -176,11 +207,15 @@ const App = () => {
         />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </>
   );
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
 
 reportWebVitals();

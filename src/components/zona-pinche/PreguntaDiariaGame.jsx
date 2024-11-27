@@ -20,18 +20,32 @@ const PreguntaDiariaGame = () => {
     } else {
       fetchPregunta();
     }
+    setTimeout(() => {
+      const gameElement = document.querySelector('.game');
+      if (gameElement) {
+        gameElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 700); // Add a slight delay
   }, []); // Se ejecuta solo una vez al montar el componente
 
   const fetchPregunta = async () => {
     try {
       const response = await fetch("/preguntas/diaria");
       const data = await response.json();
-      console.log("Respuesta del servidor:", data);
-      data.respuestas = data.respuestas.sort(() => Math.random() - 0.5); // Randomize the order of answers
+      console.log("Pregunta:", data);
       setPregunta(data);
       setHaRespondido(false); // Resetea el estado de respuesta cuando se obtiene una nueva pregunta
       setRespuestaSeleccionada(null); // Resetea la respuesta seleccionada
       setMostrarCuriosidad(false); // Resetea el estado de mostrar curiosidad
+
+      // Fetch answers using the question ID
+      const responseRespuestas = await fetch(`/respuestas/preguntaId/${data.id}`);
+      const respuestasData = await responseRespuestas.json();
+      console.log("Respuestas:", respuestasData);
+      setPregunta((prevPregunta) => ({
+        ...prevPregunta,
+        respuestas: respuestasData.sort(() => Math.random() - 0.5), // Randomize the order of answers
+      }));
     } catch (error) {
       console.error("Error al obtener la pregunta:", error);
     }
