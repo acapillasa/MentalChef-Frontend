@@ -60,7 +60,12 @@ const QuickGameGame = () => {
 
   const handleReiniciarJuego = () => {
     fetchPregunta(); // Vuelve a cargar una nueva pregunta
-    
+        setTimeout(() => {
+      const gameElement = document.querySelector('.game');
+      if (gameElement) {
+        gameElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 700); // Add a slight delay
   };
 
   const handleClickImagen = () => {

@@ -60,12 +60,78 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
       }
     }
 
+    .content {
+      background-color: gray;
+      color: $hover-bg-color;
+    }
+
+    .editar-perfil {
+      background-color: gray; // Fondo oscuro
+      color: $hover-bg-color; // Color de texto oscuro
+
+      .input-group {
+        label {
+          color: $hover-bg-color; // Asegúrate de que el texto sea visible
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          color: $hover-bg-color; // Asegúrate de que el texto sea visible
+        }
+      }
+
+      .submit-btn {
+        background-color: $primary-color; // Color de fondo del botón
+        color: $hover-bg-color; // Color del texto o ícono
+      }
+    }
+
+    .game {
+      .answers-grid {
+        .answer {
+          background-color: rgb(165, 163, 163);
+          color: $hover-bg-color;
+        }
+
+        .correct {
+          border: 2px solid $correcto;
+          color: $correcto;
+        }
+
+        .incorrect {
+          border: 2px solid $incorrecto;
+          color: $incorrecto;
+        }
+      }
+    }
+
+    .game-creator {
+      form {
+        background-color: gray;
+        
+        div {
+          h3 {
+            color: $hover-bg-color;
+          }
+        }
+      }
+    }
+
+    .dropdown-menu {
+      background-color: gray; // Fondo oscuro
+      color: $hover-bg-color; // Color de texto oscuro
+
+      .dropdown-link {
+        color: $hover-bg-color; // Asegúrate de que el texto sea visible
+      }
+    }
+
     .campanya {
       background-color: $secondary-color; // Fondo oscuro
       color: $hover-bg-color; // Color de texto oscuro
 
       .campana {
-        background-color: $secondary-color; // Fondo oscuro
+        background-color: gray; // Fondo oscuro
         color: $hover-bg-color; // Color de texto oscuro
 
         .contenedor-campana {
@@ -83,7 +149,7 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
     .grid-container{
       .eventos {
         .eventos-container {
-          background-color: $secondary-color; // Fondo oscuro
+          background-color: gray; // Fondo oscuro
           color: $secondary-color; // Color de texto oscuro
 
           div {
@@ -100,7 +166,7 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
       color: $secondary-color; // Color de texto oscuro
 
       .campana {
-        background-color: $secondary-color; // Fondo oscuro
+        background-color: gray; // Fondo oscuro
       }
       div {
         span {
@@ -125,9 +191,6 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
       .question,
       .answer {
         color: $hover-bg-color; // Asegúrate de que todos los elementos de texto dentro sean blancos
-      }
-
-      .answer {
         border: 2px solid $hover-bg-color;
       }
 
@@ -786,6 +849,10 @@ header {
   max-width: 600px;
   text-align: center;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  form {
+    border-radius: 10px;
+  }
 
   h3 {
     font-size: $letra-grande;

@@ -55,7 +55,7 @@ const EditarPerfil = ({ user }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="editar-perfil max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center text-secondary">Editar Perfil</h2>
       <label className="block mb-2 text-secondary">
         Nombre:

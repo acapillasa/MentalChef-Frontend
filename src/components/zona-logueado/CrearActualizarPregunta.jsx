@@ -193,7 +193,7 @@ const CrearActualizarPregunta = () => {
           <select
             name="categoria"
             value={formData.categoria}
-            className="select-category text-secondary"
+            className="select-category text-secondary border rounded p-2"
             onChange={handleChange}
             required
           >
@@ -211,7 +211,7 @@ const CrearActualizarPregunta = () => {
           <select
             name="dificultad"
             value={formData.dificultad}
-            className="select-difficulty text-secondary"
+            className="select-difficulty text-secondary border rounded p-2"
             onChange={handleChange}
             required
           >
@@ -229,7 +229,7 @@ const CrearActualizarPregunta = () => {
           <textarea
             name="curiosidad"
             value={formData.curiosidad}
-            className="input-curiosity text-secondary border"
+            className="input-curiosity text-secondary border rounded p-2"
             onChange={handleChange}
             placeholder="Escribe una curiosidad aquí"
           />
