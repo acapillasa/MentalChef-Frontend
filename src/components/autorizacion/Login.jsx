@@ -50,7 +50,7 @@ const Login = ({ setIsLoggedIn }) => {
       navigate('/MiCocina');
     } catch (error) {
       console.error('Login error:', error);
-      setError('Invalid username or password');
+      setError('Invalid username or password'); // Set error message
     }
   };
 
@@ -84,7 +84,7 @@ const Login = ({ setIsLoggedIn }) => {
           />
         </div>
 
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+        {error && <p className="text-red-600 bg-red-100 p-2 border border-red-600 rounded mt-2 mb-2">{error}</p>} {/* Display error message */}
 
         <button type="submit" className="login-btn">Login</button>
       </form>

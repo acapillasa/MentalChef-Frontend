@@ -6,12 +6,30 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden");
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    try {
+      const usernameCheckResponse = await fetch(`/usuarios/nombre/${username}`);
+      if (!usernameCheckResponse.ok) {
+        throw new Error('Error al comprobar el nombre de usuario');
+      }
+
+      const usernameExists = await usernameCheckResponse.json();
+      if (usernameExists) {
+        setError("El nombre de usuario ya está en uso");
+        return;
+      }
+    } catch (error) {
+      console.error('Error al comprobar el nombre de usuario:', error);
+      setError('Ese nombre de usuario ya está en uso');
       return;
     }
 
@@ -99,6 +117,7 @@ const Register = () => {
           />
         </div>
 
+        {error && <p className="text-red-600 bg-red-100 p-2 border border-red-600 rounded mt-2 mb-2">{error}</p>} {/* Display error message */}
         <button type="submit" className="register-btn">Register</button>
       </form>
 
