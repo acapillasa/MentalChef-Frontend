@@ -29,6 +29,7 @@ import RegisterChef from "components/autorizacion/RegisterChef";
 import EditarPregunta from "components/zona-chef/EditarPregunta";
 import PreguntaDiariaSelector from "./components/zona-pinche/PreguntaDiariaSelector";
 import EditarPerfil from "components/zona-logueado/EditarPerfil";
+import HistorialCompras from "components/zona-logueado/HistorialCompras";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -154,6 +155,14 @@ const App = () => {
           element={
             <>
               <Parallax /> <TiendaVirtual /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/HistorialCompras"
+          element={
+            <>
+              <Parallax /> <HistorialCompras /> <Parallax />
             </>
           }
         />
