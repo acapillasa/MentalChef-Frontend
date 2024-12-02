@@ -40,10 +40,13 @@ const TiendaVirtual = () => {
       const response = await fetch(`/tienda/comprar/${idProducto}`, {
         method: 'POST',
       });
-      if (!response.ok) {
-        throw new Error('Error al realizar la compra');
+      const message = await response.text();
+      if (response.ok && message === "Compra realizada con éxito.") {
+        alert(message);
+        window.location.reload(); // Reload the page to update monedasV
+      } else {
+        alert(message);
       }
-      alert('Compra realizada con éxito');
     } catch (error) {
       console.error('Error al realizar la compra:', error);
       alert('Error al realizar la compra');
