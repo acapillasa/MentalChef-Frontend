@@ -59,6 +59,28 @@ const PreguntaDiariaGame = () => {
       const today = new Date().toISOString().split('T')[0];
       localStorage.setItem('lastAnsweredDate', today);
       localStorage.setItem('resultado', respuesta.correcta);
+
+      if (respuesta.correcta) {
+        awardCoins(5); // Award 5 coins if the answer is correct
+      }
+    }
+  };
+
+  const awardCoins = async (coins) => {
+    try {
+      const response = await fetch("usuarios/monedasV/preguntaDiaria", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ coins }),
+      });
+      if (!response.ok) {
+        throw new Error("Error al otorgar monedas");
+      }
+      console.log("Monedas otorgadas:", coins);
+    } catch (error) {
+      console.error("Error al otorgar monedas:", error);
     }
   };
 
