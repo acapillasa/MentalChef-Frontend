@@ -18,14 +18,25 @@ const CampanyaGame = () => {
     fetchPreguntas();
   }, [categoria]); // Se ejecuta cuando cambia la categoría
 
+  const fetchRespuestas = async (preguntaId) => {
+    try {
+      const response = await fetch(`/respuestas/preguntaId/${preguntaId}`);
+      const data = await response.json();
+      return data.sort(() => Math.random() - 0.5); // Randomize the order of answers
+    } catch (error) {
+      console.error("Error al obtener las respuestas:", error);
+      return [];
+    }
+  };
+
   const fetchPreguntas = async () => {
     try {
       const response = await fetch(`/preguntas/categoria/${categoria}`);
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      data.forEach(pregunta => {
-        pregunta.respuestas = pregunta.respuestas.sort(() => Math.random() - 0.5); // Randomize the order of answers
-      });
+      for (const pregunta of data) {
+        pregunta.respuestas = await fetchRespuestas(pregunta.id);
+      }
       setPreguntas(data);
       setPreguntaActual(0); // Resetea el índice de la pregunta actual
       setHaRespondido(false); // Resetea el estado de respuesta cuando se obtiene una nueva pregunta
