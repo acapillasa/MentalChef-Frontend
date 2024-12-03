@@ -55,8 +55,33 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
     color: $hover-bg-color; // Color de texto oscuro
 
     div {
+      h2 {
+        color: $hover-bg-color; // Asegúrate de que el texto sea visible
+      }
       span {
         color: $hover-bg-color; // Asegúrate de que el texto sea visible
+      }
+
+      .compras-espacio {
+        background-color: gray;
+        div {
+          color: $hover-bg-color;
+          .compras {
+            background-color: $secondary-color;
+            color: $hover-bg-color;
+
+            .codigo {
+              color: $secondary-color;
+              span {
+                color: $secondary-color;
+              }
+            }
+            
+            span {
+              color: $hover-bg-color;
+            }
+          }
+        }
       }
     }
 
@@ -108,7 +133,7 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
     .game-creator {
       form {
         background-color: gray;
-        
+
         div {
           h3 {
             color: $hover-bg-color;
@@ -135,18 +160,16 @@ $pantalla-muy-grande: 1200px; // Pantallas grandes
         color: $hover-bg-color; // Color de texto oscuro
 
         .contenedor-campana {
-                color: $hover-bg-color; // Color de texto claro
+          color: $hover-bg-color; // Color de texto claro
         }
-        
+
         .flecha {
           color: $hover-bg-color; // Asegúrate de que el texto sea visible
         }
       }
-
-      
     }
 
-    .grid-container{
+    .grid-container {
       .eventos {
         .eventos-container {
           background-color: gray; // Fondo oscuro
@@ -405,7 +428,7 @@ header {
   background-color: $secondary-color !important; // Color de fondo del botón
   color: $blanco-transparente !important; // Color del texto o ícono
   border: none;
-  border-radius:50%; // Si deseas que sea un botón circular
+  border-radius: 50%; // Si deseas que sea un botón circular
   padding: 6px; // Ajusta el tamaño del botón
   cursor: pointer;
   z-index: 1000; // Asegura que el botón esté por encima de otros elementos de la página
