@@ -30,6 +30,7 @@ import EditarPregunta from "components/zona-chef/EditarPregunta";
 import PreguntaDiariaSelector from "./components/zona-pinche/PreguntaDiariaSelector";
 import EditarPerfil from "components/zona-logueado/EditarPerfil";
 import HistorialCompras from "components/zona-logueado/HistorialCompras";
+import CoinExplanation from "components/principales/CoinExplanation";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -103,6 +104,8 @@ const App = () => {
               <Parallax />
               <Instructions />
               <GameExample />
+              <Parallax />
+              <CoinExplanation />
               <Parallax />
               <QuickGame />
               <Parallax />
