@@ -31,6 +31,8 @@ import PreguntaDiariaSelector from "./components/zona-pinche/PreguntaDiariaSelec
 import EditarPerfil from "components/zona-logueado/EditarPerfil";
 import HistorialCompras from "components/zona-logueado/HistorialCompras";
 import CoinExplanation from "components/principales/CoinExplanation";
+import CrearCategoria from "components/zona-chef/CrearCategoria";
+import GestionarCategorias from "components/zona-chef/GestionarCategorias";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -134,6 +136,22 @@ const App = () => {
           element={
             <>
               <Parallax /> <RegisterChef /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/CrearCategoria"
+          element={
+            <>
+              <Parallax /> <CrearCategoria /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/GestionarCategorias"
+          element={
+            <>
+              <Parallax /> <GestionarCategorias /> <Parallax />
             </>
           }
         />

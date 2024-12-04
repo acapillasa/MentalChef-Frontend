@@ -173,6 +173,12 @@ const Header = ({ isLoggedIn, onLogout }) => {
                           <Link to="/CrearChef" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                             Registrar Chef
                           </Link>
+                          <Link to="/CrearEvento" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                            Crear Evento
+                          </Link>
+                          <Link to="/GestionarCategorias" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                            Gestionar categorias
+                          </Link>
                         </>
                       )}
                       <Link to="/HistorialCompras" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
