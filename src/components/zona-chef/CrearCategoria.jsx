@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CrearCategoria = () => {
   const [descripcion, setDescripcion] = useState("");
   const [categoria, setCategoria] = useState("");
   const [isEvento, setIsEvento] = useState(true);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +25,8 @@ const CrearCategoria = () => {
       }
 
       console.log("Success: Categoria creada");
+      alert("Categoria creada");
+      navigate("/GestionarCategorias");
     } catch (error) {
       console.error("Error:", error);
     }

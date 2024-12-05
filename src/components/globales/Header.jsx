@@ -159,11 +159,14 @@ const Header = ({ isLoggedIn, onLogout }) => {
                       <Link to="/Tienda" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                         Tienda
                       </Link>
-                      <Link to="/CrearPregunta" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
-                        Crear Pregunta
+                      <Link to="/HistorialCompras" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                        Historial de Compras
                       </Link>
                       <Link to="/EditarPerfil" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                         Editar Perfil
+                      </Link>
+                      <Link to="/CrearPregunta" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                        Crear Pregunta
                       </Link>
                       {role === "ROLE_CHEF" && (
                         <>
@@ -173,17 +176,14 @@ const Header = ({ isLoggedIn, onLogout }) => {
                           <Link to="/CrearChef" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                             Registrar Chef
                           </Link>
-                          <Link to="/CrearEvento" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
-                            Crear Evento
+                          <Link to="/CrearCategoria" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
+                            Crear Categoria
                           </Link>
                           <Link to="/GestionarCategorias" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
                             Gestionar categorias
                           </Link>
                         </>
                       )}
-                      <Link to="/HistorialCompras" className="dropdown-link px-4 py-2 text-center" onClick={handleLinkClick}>
-                        Historial de Compras
-                      </Link>
                       <button
                         onClick={handleLogout}
                         className="logout-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mt-2 text-center"
