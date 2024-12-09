@@ -33,6 +33,7 @@ import HistorialCompras from "components/zona-logueado/HistorialCompras";
 import CoinExplanation from "components/principales/CoinExplanation";
 import CrearCategoria from "components/zona-chef/CrearCategoria";
 import GestionarCategorias from "components/zona-chef/GestionarCategorias";
+import Ranking from "components/globales/Ranking";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -168,6 +169,14 @@ const App = () => {
           element={
             <>
               <Parallax /> <MiCocina /> <Parallax />
+            </>
+          }
+        />
+        <Route
+          path="/ranking"
+          element={
+            <>
+              <Parallax /> <Ranking /> <Parallax />
             </>
           }
         />

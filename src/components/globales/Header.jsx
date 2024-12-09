@@ -134,7 +134,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
             </Link>
             </li>
             <li>
-              <a href="#ranking">Ranking Mensual</a>
+              <Link to="/ranking">Ranking Mensual</Link>
             </li>
             <li>
               <a href="#contacto">Contacto</a>

@@ -63,6 +63,28 @@ const PreguntaDiariaGame = () => {
       if (respuesta.correcta) {
         awardCoins(5); // Award 5 coins if the answer is correct
       }
+
+      // Send POST request to /rankingDiario
+      registrarPartidaDiaria(pregunta.id, respuesta.correcta);
+    }
+  };
+
+  const registrarPartidaDiaria = async (preguntaId, acerto) => {
+    try {
+      const response = await fetch("usuarios/rankingDiario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ preguntaId, acerto }),
+      });
+      if (!response.ok) {
+        throw new Error("Error al registrar la partida diaria");
+      }
+      const result = await response.text();
+      console.log("Partida diaria registrada:", result);
+    } catch (error) {
+      console.error("Error al registrar la partida diaria:", error);
     }
   };
 
