@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const CrearActualizarPregunta = () => {
   const { id } = useParams();
@@ -19,10 +19,26 @@ const CrearActualizarPregunta = () => {
   const usuarioId = 103; // Asume que el usuarioId es 103, ajusta según sea necesario
 
   useEffect(() => {
-    fetch("/categorias/categoriasSinEvento")
-      .then((response) => response.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching categories:", error));
+    const fetchUserRoleAndCategories = async () => {
+      try {
+        const userResponse = await fetch("/usuarios/me");
+        const userData = await userResponse.json();
+        const userRole = userData.role;
+
+        let categoriesUrl = "/categorias/todas";
+        if (userRole === "ROLE_PINCHE") {
+          categoriesUrl = "/categorias/categoriasSinEvento";
+        }
+
+        const categoriesResponse = await fetch(categoriesUrl);
+        const categoriesData = await categoriesResponse.json();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Error fetching user role or categories:", error);
+      }
+    };
+
+    fetchUserRoleAndCategories();
   }, []);
 
   useEffect(() => {

@@ -108,15 +108,8 @@ const Ranking = () => {
 
         )}
       </div>
-      <ul className="list-disc pl-5 text-black">
-        {ranking.slice(3).map((item, index) => (
-          <li key={index} className="mb-2">
-            Usuario: {item.username}, Aciertos: {item.correctCount}
-          </li>
-        ))}
-      </ul>
       {userRanking && (
-        <div className="mt-4 p-4 bg-blue-200 rounded-lg">
+        <div className="mt-4 p-4 bg-blue-200 rounded-lg mx-auto text-center" style={{ maxWidth: '400px' }}>
           <h2 className="text-xl font-bold text-black">Tu posición</h2>
           <p className="text-black">Usuario: {userRanking.usuarioNombre}</p>
           <p className="text-black">Posición: {userRanking.posicion}</p>

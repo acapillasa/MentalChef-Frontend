@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Asegúrate de importar Link
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -7,6 +7,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,14 +23,14 @@ const Register = () => {
         throw new Error('Error al comprobar el nombre de usuario');
       }
 
-      const usernameExists = await usernameCheckResponse.json();
-      if (usernameExists) {
+      const usernameAvailable = await usernameCheckResponse.json();
+      if (!usernameAvailable) {
         setError("El nombre de usuario ya está en uso");
         return;
       }
     } catch (error) {
       console.error('Error al comprobar el nombre de usuario:', error);
-      setError('Ese nombre de usuario ya está en uso');
+      setError('Hubo un problema al comprobar el nombre de usuario. Por favor, inténtalo de nuevo.');
       return;
     }
 
@@ -55,15 +56,41 @@ const Register = () => {
 
       const result = await response.json();
       console.log('Registro exitoso:', result);
+
+      // Login after successful registration
+      const loginData = {
+        username,
+        password
+      };
+
+      const loginResponse = await fetch('/usuarios/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+        credentials: 'include',
+      });
+
+      if (!loginResponse.ok) {
+        throw new Error('Error en la solicitud de inicio de sesión');
+      }
+
+      const loginResult = await loginResponse.text();
+      console.log('Inicio de sesión exitoso:', loginResult);
+
+      // Redirect to the MiCocina page after successful login
+      navigate('/MiCocina');
+      window.location.reload(); // Reload the page
     } catch (error) {
-      console.error('Error al registrar:', error);
-      alert('Hubo un problema al registrar el usuario. Por favor, inténtalo de nuevo.');
+      console.error('Error al registrar o iniciar sesión:', error);
+      alert('Hubo un problema al registrar o iniciar sesión. Por favor, inténtalo de nuevo.');
     }
   };
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
+      <h2 className="text-center">Register</h2>
       <form onSubmit={handleSubmit} className="register-form">
         <div className="input-group">
           <label htmlFor="username">Username</label>
@@ -121,7 +148,7 @@ const Register = () => {
         <button type="submit" className="register-btn">Register</button>
       </form>
 
-      <div className="login-link">
+      <div className="login-link text-center">
         <p>¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link></p>
       </div>
     </div>
