@@ -12,6 +12,8 @@ const EventoGame = () => {
   const [haRespondido, setHaRespondido] = useState(false);
   const [mostrarCuriosidad, setMostrarCuriosidad] = useState(false); // Estado para mostrar la curiosidad
   const [showFelicidades, setShowFelicidades] = useState(false); // Estado para mostrar FelicidadesCard
+  const [eventoCompletado, setEventoCompletado] = useState(false); // Estado para saber si el evento ya fue completado
+  const [todasCorrectas, setTodasCorrectas] = useState(true); // Estado para saber si todas las respuestas fueron correctas
 
   useEffect(() => {
     fetchPreguntas();
@@ -42,6 +44,8 @@ const EventoGame = () => {
       setRespuestaSeleccionada(null); // Resetea la respuesta seleccionada
       setMostrarCuriosidad(false); // Resetea el estado de mostrar curiosidad
       setShowFelicidades(false); // Resetea el estado de mostrar FelicidadesCard
+      setEventoCompletado(false); // Resetea el estado de evento completado
+      setTodasCorrectas(true); // Resetea el estado de todas correctas
     } catch (error) {
       console.error("Error al obtener la pregunta:", error);
     }
@@ -51,6 +55,9 @@ const EventoGame = () => {
     if (!haRespondido) {
       setRespuestaSeleccionada(respuesta);
       setHaRespondido(true);
+      if (!respuesta.correcta) {
+        setTodasCorrectas(false); // Marcar como incorrecta si alguna respuesta es incorrecta
+      }
     }
   };
 
@@ -61,23 +68,28 @@ const EventoGame = () => {
       setRespuestaSeleccionada(null);
       setMostrarCuriosidad(false);
     } else {
-      try {
-        const response = await fetch('/usuarios/monedasV/evento', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+      const eventoKey = `eventoCompletado_${categoria}`;
+      if (!localStorage.getItem(eventoKey)) {
+        try {
+          const endpoint = todasCorrectas ? '/usuarios/monedasV/evento' : '/usuarios/monedasV/preguntaDiaria';
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-        if (!response.ok) {
-          throw new Error('Error al enviar las monedas');
+          if (!response.ok) {
+            throw new Error('Error al enviar las monedas');
+          }
+
+          console.log('Monedas enviadas exitosamente');
+          localStorage.setItem(eventoKey, 'true'); // Marcar el evento como completado en localStorage
+        } catch (error) {
+          console.error('Error al enviar las monedas:', error);
         }
-
-        console.log('Monedas enviadas exitosamente');
-        setShowFelicidades(true); // Show FelicidadesCard when no more questions are available
-      } catch (error) {
-        console.error('Error al enviar las monedas:', error);
       }
+      setShowFelicidades(true); // Show FelicidadesCard when no more questions are available
     }
   };
 

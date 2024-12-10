@@ -5,6 +5,7 @@ const CrearActualizarPregunta = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [usuarioId, setUsuarioId] = useState(null); // State for userId
   const [formData, setFormData] = useState({
     pregunta: "",
     respuestas: [{ idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }, { idRespuesta: null, respuesta: "" }], // Cuatro respuestas
@@ -16,7 +17,6 @@ const CrearActualizarPregunta = () => {
   });
 
   const dificultades = ["Facil", "Media", "Dificil"];
-  const usuarioId = 103; // Asume que el usuarioId es 103, ajusta según sea necesario
 
   useEffect(() => {
     const fetchUserRoleAndCategories = async () => {
@@ -24,6 +24,8 @@ const CrearActualizarPregunta = () => {
         const userResponse = await fetch("/usuarios/me");
         const userData = await userResponse.json();
         const userRole = userData.role;
+        const userId = userData.id;
+        setUsuarioId(userId); // Set userId
 
         let categoriesUrl = "/categorias/todas";
         if (userRole === "ROLE_PINCHE") {
@@ -92,7 +94,7 @@ const CrearActualizarPregunta = () => {
         categoria: formData.categoria,
         dificultad: formData.dificultad,
         imagen: formData.imagen,
-        usuarioId, // Añadir usuarioId al crear/actualizar
+        usuarioId, // Use the fetched userId
       };
 
       console.log("Datos de la pregunta:", JSON.stringify(newPreguntaData, null, 2));
