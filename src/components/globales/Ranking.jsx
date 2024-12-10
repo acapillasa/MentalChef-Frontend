@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Ranking = () => {
   const [ranking, setRanking] = useState([]);
+  const [userRanking, setUserRanking] = useState(null);
 
   useEffect(() => {
     const fetchRanking = async () => {
@@ -35,6 +36,47 @@ const Ranking = () => {
 
     fetchRanking();
   }, []);
+
+  useEffect(() => {
+    const fetchUserRanking = async () => {
+      try {
+        const response = await fetch("usuarios/miRankingDiario");
+        if (!response.ok) {
+          throw new Error("Error al obtener el ranking del usuario");
+        }
+        const data = await response.json();
+
+        // Group by user ID and count correct answers
+        const userCorrectCount = data.reduce((acc, item) => {
+          if (item.acertado) {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+
+        // Find the user's position in the overall ranking
+        const userPosition = ranking.findIndex(item => item.usuarioId === data[0].usuarioId) + 1;
+
+        setUserRanking({
+          usuarioNombre: data[0].usuarioNombre,
+          correctCount: userCorrectCount,
+          posicion: userPosition
+        });
+
+        console.log("Ranking del usuario:", {
+          usuarioNombre: data[0].usuarioNombre,
+          correctCount: userCorrectCount,
+          posicion: userPosition
+        });
+      } catch (error) {
+        console.error("Error al obtener el ranking del usuario:", error);
+      }
+    };
+
+    if (ranking.length > 0) {
+      fetchUserRanking();
+    }
+  }, [ranking]);
 
   const topThree = ranking.slice(0, 3);
 
@@ -73,6 +115,14 @@ const Ranking = () => {
           </li>
         ))}
       </ul>
+      {userRanking && (
+        <div className="mt-4 p-4 bg-blue-200 rounded-lg">
+          <h2 className="text-xl font-bold text-black">Tu posición</h2>
+          <p className="text-black">Usuario: {userRanking.usuarioNombre}</p>
+          <p className="text-black">Posición: {userRanking.posicion}</p>
+          <p className="text-black">Aciertos: {userRanking.correctCount}</p>
+        </div>
+      )}
     </div>
   );
 };
